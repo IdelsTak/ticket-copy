@@ -33,10 +33,6 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        toolBar = new javax.swing.JToolBar();
-        eventButton = new javax.swing.JButton();
-        customerButton = new javax.swing.JButton();
-        reportsButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         menu = new javax.swing.JMenu();
         eventMenuItem = new javax.swing.JMenuItem();
@@ -45,27 +41,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Main");
-
-        toolBar.setFloatable(false);
-        toolBar.setRollover(true);
-
-        eventButton.setText("Event");
-        eventButton.setFocusable(false);
-        eventButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        eventButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolBar.add(eventButton);
-
-        customerButton.setText("Customer");
-        customerButton.setFocusable(false);
-        customerButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        customerButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolBar.add(customerButton);
-
-        reportsButton.setText("Reports");
-        reportsButton.setFocusable(false);
-        reportsButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        reportsButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolBar.add(reportsButton);
 
         menu.setText("Menu");
 
@@ -86,13 +61,11 @@ public class MainWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(toolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(toolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 254, Short.MAX_VALUE))
+            .addGap(0, 279, Short.MAX_VALUE)
         );
 
         setSize(new java.awt.Dimension(400, 332));
@@ -101,14 +74,10 @@ public class MainWindow extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton customerButton;
     private javax.swing.JMenuItem customerMenuItem;
-    private javax.swing.JButton eventButton;
     private javax.swing.JMenuItem eventMenuItem;
     private javax.swing.JMenu menu;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JButton reportsButton;
     private javax.swing.JMenuItem reportsMenuItem;
-    private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 }
