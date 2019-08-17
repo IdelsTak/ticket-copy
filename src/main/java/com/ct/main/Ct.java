@@ -32,9 +32,10 @@ public class Ct {
                  | javax.swing.UnsupportedLookAndFeelException ex) {
             LOG.log(java.util.logging.Level.SEVERE, null, ex);
         }
-
-        var loginController = new LoginController();
         
+        //Start the login controller
+        var loginController = new LoginController();
+        //Ask the controller to initiate login
         loginController.displayLogin();
     }
 }
