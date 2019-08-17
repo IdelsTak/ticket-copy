@@ -5,7 +5,7 @@
  */
 package com.ct.controllers;
 
-import com.ct.views.EventWindow;
+import com.ct.views.EventsWindow;
 import com.ct.views.MainWindow;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -22,15 +22,14 @@ public class MainWindowController {
 
     public MainWindowController() {
         this.mainWindow = new MainWindow();
-        
+
         JMenuItem eventMenuItem = mainWindow.getEventMenuItem();
         JPanel primaryPanel = mainWindow.getPrimaryPanel();
-        
+
         eventMenuItem.addActionListener(actionEvent -> {
             primaryPanel.removeAll();
-            
-            primaryPanel.add(new EventWindow(), BorderLayout.CENTER);
-            
+            var eventsWindowController = new EventsWindowController();
+            primaryPanel.add(eventsWindowController.getEventsWindow(), BorderLayout.CENTER);
             primaryPanel.revalidate();
         });
     }

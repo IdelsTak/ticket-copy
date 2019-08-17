@@ -19,38 +19,36 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="scrollPane" pref="0" max="32767" attributes="0"/>
+                  <Component id="scrollPane" max="32767" attributes="0"/>
                   <Component id="headerLabel" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel3" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel6" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel7" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel8" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="typeLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="idLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="nameLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="venueLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="dateTimeLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="priceLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="remarksLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane1" pref="302" max="32767" attributes="0"/>
+                          <Component id="remarksScrollPane" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jComboBox1" linkSize="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField3" linkSize="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField4" linkSize="2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField5" linkSize="2" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField6" linkSize="2" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField1" linkSize="2" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
-                                  <Component id="jTextField2" linkSize="1" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                  <Component id="typeComboBox" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="venueTextField" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="priceTextField" linkSize="2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="idTextField" linkSize="2" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+                                  <Component id="nameTextField" linkSize="1" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="addButton" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                                      <Component id="updateButton" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="deleteButton" min="-2" max="-2" attributes="0"/>
                                   </Group>
+                                  <Component id="dateTimePicker" linkSize="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -67,54 +65,49 @@
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="headerLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="scrollPane" max="32767" attributes="0"/>
+              <Component id="scrollPane" pref="432" max="32767" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="idLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="idTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="typeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="typeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="venueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="venueTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="dateTimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="dateTimePicker" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField5" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField6" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="priceLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="priceTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+                  <Component id="remarksLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="remarksScrollPane" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="addButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="updateButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="36" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -140,25 +133,8 @@
       <SubComponents>
         <Component class="javax.swing.JTable" name="eventsTable">
           <Properties>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="8" rowCount="4">
-                <Column editable="false" title="Id" type="java.lang.String"/>
-                <Column editable="false" title="Type" type="java.lang.String"/>
-                <Column editable="false" title="Name" type="java.lang.String"/>
-                <Column editable="false" title="Venue" type="java.lang.String"/>
-                <Column editable="false" title="Date" type="java.lang.String"/>
-                <Column editable="false" title="Time" type="java.lang.String"/>
-                <Column editable="true" title="Ticket Price" type="java.lang.String"/>
-                <Column editable="true" title="Remark" type="java.lang.String"/>
-              </Table>
-            </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
@@ -203,19 +179,19 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="jLabel1">
+    <Component class="javax.swing.JLabel" name="idLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Id:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField1">
+    <Component class="javax.swing.JTextField" name="idTextField">
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
+    <Component class="javax.swing.JLabel" name="typeLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Type:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBox1">
+    <Component class="javax.swing.JComboBox" name="typeComboBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="2">
@@ -228,54 +204,47 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel3">
+    <Component class="javax.swing.JLabel" name="nameLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Name:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField2">
+    <Component class="javax.swing.JTextField" name="nameTextField">
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel4">
+    <Component class="javax.swing.JLabel" name="venueLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Venue:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField3">
+    <Component class="javax.swing.JTextField" name="venueTextField">
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel5">
+    <Component class="javax.swing.JLabel" name="dateTimeLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Date:"/>
+        <Property name="text" type="java.lang.String" value="Date &amp; Time:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField4">
+    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dateTimePicker">
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel6">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Time:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="jTextField5">
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel7">
+    <Component class="javax.swing.JLabel" name="priceLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Price:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField6">
+    <Component class="javax.swing.JTextField" name="priceTextField">
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel8">
+    <Component class="javax.swing.JLabel" name="remarksLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Remarks:"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+    <Container class="javax.swing.JScrollPane" name="remarksScrollPane">
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextArea" name="jTextArea1">
+        <Component class="javax.swing.JTextArea" name="remarksTextArea">
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
@@ -283,17 +252,17 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="addButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Add"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="updateButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Update"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton3">
+    <Component class="javax.swing.JButton" name="deleteButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Delete"/>
       </Properties>

@@ -1,6 +1,10 @@
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/main/Ct.java
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/database/Connection.java
+/home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/views/EventsWindow.java
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/views/Login.java
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/config/Configs.java
+/home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/views/MainWindow.java
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/controllers/LoginController.java
+/home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/controllers/MainWindowController.java
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/models/LoginModel.java
+/home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/models/EventModel.java

@@ -8,7 +8,6 @@ package com.ct.controllers;
 import com.ct.database.Connection;
 import com.ct.models.LoginModel;
 import com.ct.views.Login;
-import com.ct.views.MainWindow;
 import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
