@@ -9,7 +9,7 @@ package com.ct.main;
  *
  * @author admin
  */
-public class ct {
+public class Ct {
     
     public static void main (String [] args){
     
