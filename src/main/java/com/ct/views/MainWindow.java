@@ -6,6 +6,8 @@
 package com.ct.views;
 
 import java.awt.Frame;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
 /**
  *
@@ -24,6 +26,22 @@ public class MainWindow extends javax.swing.JFrame {
         initComponents();
     }
 
+    public JPanel getPrimaryPanel() {
+        return primaryPanel;
+    }
+
+    public JMenuItem getCustomerMenuItem() {
+        return customerMenuItem;
+    }
+
+    public JMenuItem getEventMenuItem() {
+        return eventMenuItem;
+    }
+
+    public JMenuItem getReportsMenuItem() {
+        return reportsMenuItem;
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -33,6 +51,7 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        primaryPanel = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
         menu = new javax.swing.JMenu();
         eventMenuItem = new javax.swing.JMenuItem();
@@ -41,6 +60,9 @@ public class MainWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Welcome to Colombo Theater");
+
+        primaryPanel.setLayout(new java.awt.BorderLayout());
+        getContentPane().add(primaryPanel, java.awt.BorderLayout.CENTER);
 
         menu.setText("Menu");
 
@@ -57,17 +79,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         setJMenuBar(menuBar);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
-        );
-
         setSize(new java.awt.Dimension(400, 332));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -78,6 +89,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem eventMenuItem;
     private javax.swing.JMenu menu;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JPanel primaryPanel;
     private javax.swing.JMenuItem reportsMenuItem;
     // End of variables declaration//GEN-END:variables
 }

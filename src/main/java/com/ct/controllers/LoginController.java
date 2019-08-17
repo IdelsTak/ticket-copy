@@ -99,12 +99,11 @@ public class LoginController {
                 //then close the login form and show
                 //another window
                 if (valid) {
+                    //Close the login window
                     login.dispose();
-                    
-                    //Show the main window on the EDT
-                    EventQueue.invokeLater(() -> {
-                        new MainWindow().setVisible(true);
-                    });
+                    //open the main window
+                    var mainWindowController = new MainWindowController();
+                    mainWindowController.displayMainWindow();
                 }
             }
         };
