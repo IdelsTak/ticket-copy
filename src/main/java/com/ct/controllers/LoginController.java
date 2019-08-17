@@ -7,7 +7,7 @@ package com.ct.controllers;
 
 import com.ct.database.Connection;
 import com.ct.models.LoginModel;
-import com.ct.views.LoginWindow;
+import com.ct.views.Login;
 import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
@@ -32,7 +32,7 @@ import static javax.swing.SwingWorker.StateValue.DONE;
 public class LoginController {
 
     private static final Logger LOG = Logger.getLogger(LoginController.class.getName());
-    private final LoginWindow loginWindow;
+    private final Login login;
     private final Map<Integer, LoginModel> usersCache = new TreeMap<>();
     private final JTextField usernameTextField;
     private final JPasswordField passwordField;
@@ -40,7 +40,7 @@ public class LoginController {
     private boolean valid;
 
     public LoginController() {
-        this.loginWindow = new LoginWindow();
+        this.login = new Login();
 
         SwingWorker<Map<Integer, LoginModel>, Void> worker = new SwingWorkerImpl();
 
@@ -66,12 +66,12 @@ public class LoginController {
 
         worker.execute();
 
-        usernameTextField = loginWindow.getUsernameTextField();
-        passwordField = loginWindow.getPasswordField();
-        statusLabel = loginWindow.getStatusLabel();
+        usernameTextField = login.getUsernameTextField();
+        passwordField = login.getPasswordField();
+        statusLabel = login.getStatusLabel();
 
-        var loginButton = loginWindow.getLoginButton();
-        var cancelButton = loginWindow.getCancelButton();
+        var loginButton = login.getLoginButton();
+        var cancelButton = login.getCancelButton();
 
         ActionListener actionListener = actionEvent -> {
             if (actionEvent.getSource() == cancelButton) {
@@ -80,7 +80,7 @@ public class LoginController {
                 checkValid();
 
                 if (valid) {
-                    loginWindow.dispose();
+                    login.dispose();
                 }
             }
         };
@@ -96,7 +96,7 @@ public class LoginController {
      */
     public void displayLogin() {
         EventQueue.invokeLater(() -> {
-            loginWindow.setVisible(true);
+            login.setVisible(true);
         });
     }
 

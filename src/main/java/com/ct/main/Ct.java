@@ -6,8 +6,6 @@
 package com.ct.main;
 
 import com.ct.controllers.LoginController;
-import com.ct.views.LoginWindow;
-import java.awt.EventQueue;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 
@@ -35,10 +33,6 @@ public class Ct {
             LOG.log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-//        /* Create and display the login window */
-//        EventQueue.invokeLater(() -> {
-//            new LoginWindow().setVisible(true);
-//        });
         var loginController = new LoginController();
         
         loginController.displayLogin();
