@@ -40,54 +40,72 @@ public class LoginController {
     private boolean valid;
 
     public LoginController() {
+        //Create the login form
         this.login = new Login();
-
+        //Create a swingworker, which will pull data
+        //from the database in a background thread
         SwingWorker<Map<Integer, LoginModel>, Void> worker = new SwingWorkerImpl();
-
+        //Listen to whether the worker has finished
+        //loading the data from database
         worker.addPropertyChangeListener(changeEvent -> {
-            LOG.log(Level.INFO, "Prop name: [{0}]; oldVal: [{1}]; newVal: [{2}]", new Object[]{
-                changeEvent.getPropertyName(),
-                changeEvent.getOldValue(),
-                changeEvent.getNewValue()});
-
+            //If the worker has finished loading
+            //the cache with the usernames and passwords
+            //insert the values in a local cache
             if (changeEvent.getPropertyName().equals("state")
                     && changeEvent.getNewValue().equals(DONE)) {
+                //Attempt to get the values that
+                //were loaded by the worker in a
+                //background thread
                 try {
                     Map<Integer, LoginModel> map = worker.get();
-                    
+                    //Use Java's member referencing to
+                    //put all the values loaded by the
+                    //worker in a background thread in the
+                    //local cache of usernames and passwords
                     map.forEach(usersCache::putIfAbsent);
-                    
-                } catch (InterruptedException |
-                        ExecutionException ex) {
+                } catch (InterruptedException
+                         | ExecutionException ex) {
                     LOG.log(Level.SEVERE, null, ex);
                 }
             }
         });
-
+        //Start running the worker in a background thread
         worker.execute();
 
+        //Get the username and password fields from
+        //the login form
         usernameTextField = login.getUsernameTextField();
         passwordField = login.getPasswordField();
+        //Get the status label where we will
+        //display any errors, e.g. incorrect password
         statusLabel = login.getStatusLabel();
-
+        //Get the buttons for login and cancel
         var loginButton = login.getLoginButton();
         var cancelButton = login.getCancelButton();
-
+        //Create an action listener that will
+        //do something when the login or cancel button
+        //is pressed
         ActionListener actionListener = actionEvent -> {
             if (actionEvent.getSource() == cancelButton) {
+                //If user doesn't want to login
+                //then exit the application
                 System.exit(0);
             } else if (actionEvent.getSource() == loginButton) {
+                //Ensure that the details entered
+                //by the user are correct
                 checkValid();
-
+                //If the details are correct
+                //then close the login form and show
+                //another window
                 if (valid) {
                     login.dispose();
                 }
             }
         };
-
+        //Attach the action listener to the login
+        //and cancel buttons
         loginButton.addActionListener(actionListener);
         cancelButton.addActionListener(actionListener);
-
     }
 
     /**
@@ -95,33 +113,54 @@ public class LoginController {
      * it's safe to call this method from any thread.
      */
     public void displayLogin() {
+        //Show the login form on the EDT
         EventQueue.invokeLater(() -> {
             login.setVisible(true);
         });
     }
 
+    /**
+     * Checks whether the username and password provided are correct.
+     */
     private void checkValid() {
+        //Get the username and password fields
+        //so that we can retreive the login details
+        //provided by the user
         String username = usernameTextField.getText();
         char[] password = passwordField.getPassword();
-
+        //If no username has been provided
+        //then mark the login as invalid
         if (username == null || username.isBlank()) {
             valid = false;
             statusLabel.setText("Please enter the username");
         } else {
+            //Start checking whether the password
+            //provided by the user is correct
             char[] storedPassword = null;
-
+            //Look for the password corresponding to
+            //the username in the local cache
             for (var loginModel : usersCache.values()) {
                 if (username.equals(loginModel.getUsername())) {
+                    //If the username is found in cache
+                    //then copy the password that is stored
+                    //for that user in database
                     storedPassword = Arrays.copyOf(
                             loginModel.getPassword(),
                             loginModel.getPassword().length);
+                    //Since the password has been found
+                    //we should exit this loop
                     break;
                 }
             }
 
+            //If the stored password is equal to
+            //what the user has provided, then mark the
+            //login as valid
             if (storedPassword != null
                     && Arrays.equals(password, storedPassword)) {
                 valid = true;
+                //Mark the login as invalid if the passwords
+                //do not match
             } else if (!Arrays.equals(password, storedPassword)) {
                 valid = false;
                 statusLabel.setText("Incorrect password, please try again");
@@ -130,37 +169,47 @@ public class LoginController {
 
     }
 
+    /**
+     * Works in a background thread to retrieve the usernames and passwords from
+     * database.
+     */
     private static class SwingWorkerImpl extends SwingWorker<Map<Integer, LoginModel>, Void> {
 
         @Override
         protected Map<Integer, LoginModel> doInBackground() throws Exception {
+            //create a local cache of the usernames
+            //and passwords
             Map<Integer, LoginModel> cache = new TreeMap<>();
-
+            //Get the connection to database
             java.sql.Connection connection = Connection.getConnection();
-
+            //Only continue if a database connection
+            //was established
             if (connection != null) {
+                //Retrieve all the users from database
                 String sql = "select * from user";
 
                 try (PreparedStatement ps = connection.prepareStatement(sql);
                      ResultSet rs = ps.executeQuery()) {
-
+                    //Scroll through all the rows
                     while (rs.next()) {
                         int id = rs.getInt("user_id");
                         String username = rs.getString("username");
                         String password = rs.getString("password");
-
+                        //Create a LoginModel object using the
+                        //values extracted from the row
                         var loginModel = new LoginModel(username, password.toCharArray());
 
                         LOG.log(Level.INFO, "Loaded user: [{0}] from database", loginModel);
-
+                        //Attach the LoginModel object
+                        //to the cache
                         cache.put(id, loginModel);
                     }
                 } catch (SQLException ex) {
                     LOG.log(Level.SEVERE, null, ex);
                 }
             }
-            
-            LOG.log(Level.INFO, "No of users: [{0}]", cache.keySet().size());
+
+            LOG.log(Level.INFO, "No of users in database: [{0}]", cache.keySet().size());
 
             return cache;
         }
