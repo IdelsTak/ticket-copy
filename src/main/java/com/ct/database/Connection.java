@@ -5,6 +5,7 @@
  */
 package com.ct.database;
 
+import com.ct.config.Configs;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -31,13 +32,19 @@ public class Connection {
         //made already at some point in the apps lifecyle
         //which most probably is during the login
         if (connection == null) {
+            var configs = new Configs();
+            configs.loadProperties();
+            
+            configs.getUsername();
+            configs.getUsername();
+            configs.getPassword();
             //The url of the database
-            String url = "jdbc:mysql://localhost:3306/mydb";
+            String url = configs.getUrl()/*"jdbc:mysql://localhost:3306/mydb"*/;
             //The user name
-            String user = "root";
+            String user = configs.getUsername()/*"root"*/;
             //The database password
-            String password = "corner-dicing";
-
+            String password = String.valueOf(configs.getPassword())/*"corner-dicing"*/;
+            
             //Attempt to retrieve a connection
             //Will fail and throw an exception
             //if the credentials are incorrect or
