@@ -40,7 +40,7 @@ public class MainWindow extends javax.swing.JFrame {
         reportsMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Main");
+        setTitle("Welcome to Colombo Theater");
 
         menu.setText("Menu");
 
