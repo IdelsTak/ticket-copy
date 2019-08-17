@@ -27,10 +27,6 @@ public class Configs {
     private char[] password;
     private String url;
 
-    public Configs() {
-
-    }
-
     public String getUsername() {
         return username;
     }
@@ -56,13 +52,15 @@ public class Configs {
     }
 
     public void loadProperties() {
-        var props = new Properties();
 
         LOG.log(Level.INFO, "Loading properties from: [{0}]", "./Props");
-
+        //Load the database connection properties
+        //from file
         try (InputStream in = new FileInputStream("./Props")) {
+            var props = new Properties();
             props.load(in);
-
+            //Read the connection properties
+            //from file
             username = props.getProperty("username");
             password = props.getProperty("password").toCharArray();
             url = props.getProperty("url");
@@ -74,13 +72,14 @@ public class Configs {
     }
 
     public void storePoperties() {
+        //Add the database connection properties
+        //to an external file to persist them
         var props = new Properties();
         props.setProperty("username", username);
         props.setProperty("password", String.valueOf(password));
         props.setProperty("url", url);
-        File file = new File("./Props");
 
-        LOG.log(Level.INFO, "Storing properties to: [{0}]", file);
+        LOG.log(Level.INFO, "Storing properties to: [{0}]", "./Props");
 
         try (OutputStream out = new FileOutputStream("./Props")) {
             //Store with some comments 

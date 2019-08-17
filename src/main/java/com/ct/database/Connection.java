@@ -32,6 +32,7 @@ public class Connection {
         //made already at some point in the apps lifecyle
         //which most probably is during the login
         if (connection == null) {
+            //Retrieve the database 
             var configs = new Configs();
             configs.loadProperties();
             

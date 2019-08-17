@@ -101,7 +101,7 @@ public class LoginController {
                 if (valid) {
                     login.dispose();
                     
-                    //Show the main window
+                    //Show the main window on the EDT
                     EventQueue.invokeLater(() -> {
                         new MainWindow().setVisible(true);
                     });
