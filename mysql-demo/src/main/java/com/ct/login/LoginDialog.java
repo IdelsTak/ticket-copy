@@ -27,7 +27,7 @@ public class LoginDialog extends JDialog {
     private JTextField usernameTextField;
     private JPasswordField passwordField;
     private JLabel statusLabel;
-    private boolean isValid;
+    private boolean canLogin;
 
     public LoginDialog(Frame owner) {
         super(owner);
@@ -61,11 +61,12 @@ public class LoginDialog extends JDialog {
 
                 checkValid();
 
-                if (isValid) {
+                if (canLogin) {
                     databaseLogin = new DatabaseLogin(
                             urlTextField.getText().trim(),
                             usernameTextField.getText().trim(),
                             passwordField.getPassword());
+                    dispose();
                 }
                 
             } else if (event.getSource() == cancelButton) {
@@ -96,15 +97,15 @@ public class LoginDialog extends JDialog {
 
         if (url == null || url.isBlank()) {
             statusLabel.setText("Please enter the URL");
-            isValid = false;
+            canLogin = false;
         } else if (username == null || username.isBlank()) {
             statusLabel.setText("Please enter a username");
-            isValid = false;
+            canLogin = false;
         } else if (password == null || password.length == 0) {
             statusLabel.setText("You are about to use a blank password");
-            isValid = true;
+            canLogin = true;
         }else{
-            isValid = true;
+            canLogin = true;
         }
     }
 
