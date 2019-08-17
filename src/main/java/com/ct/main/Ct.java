@@ -15,9 +15,9 @@ import javax.swing.UIManager;
  *
  * @author admin
  */
-public class CT {
+public class Ct {
 
-    private static final Logger LOG = Logger.getLogger(CT.class.getName());
+    private static final Logger LOG = Logger.getLogger(Ct.class.getName());
 
     /**
      * Application's entry point.
