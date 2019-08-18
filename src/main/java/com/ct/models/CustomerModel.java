@@ -45,6 +45,10 @@ public class CustomerModel {
         this.bookingDate = bookingDate;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public EventModel getEvent() {
         return event;
     }

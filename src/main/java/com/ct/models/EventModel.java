@@ -116,22 +116,23 @@ public class EventModel {
 
     @Override
     public String toString() {
-        return "EventModel{"
-                + "eventId="
-                + eventId
-                + ", eventType="
-                + eventType
-                + ", eventName="
-                + eventName
-                + ", venue="
-                + venue
-                + ", dateTime="
-                + dateTime
-                + ", ticketPrice="
-                + ticketPrice
-                + ", remark="
-                + remark
-                + '}';
+//        return "EventModel{"
+//                + "eventId="
+//                + eventId
+//                + ", eventType="
+//                + eventType
+//                + ", eventName="
+//                + eventName
+//                + ", venue="
+//                + venue
+//                + ", dateTime="
+//                + dateTime
+//                + ", ticketPrice="
+//                + ticketPrice
+//                + ", remark="
+//                + remark
+//                + '}';
+        return eventId + " - " + eventName;
     }
 
 }

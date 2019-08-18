@@ -20,6 +20,8 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
@@ -142,7 +144,7 @@ public class EventsWindowController {
 
         //Create an action for adding events to the database
         //and attach it to the addButton
-        addButton.addActionListener(new AddToDatabase());
+        addButton.addActionListener(new AddEventToDatabase());
         //Create an action for modifying events that are
         //in the database and then attach it to the update button
         updateButton.addActionListener(new UpdateEventInDatabase());
@@ -150,6 +152,21 @@ public class EventsWindowController {
         //database, then attach the action to the delete button
         deleteButton.addActionListener(new DeleteEventFromDatabase());
 
+    }
+
+    public Collection<EventModel> getEventModels() {
+        SwingWorker<Map<String, EventModel>, Void> loader = new EventsLoader();
+        
+        loader.execute();
+        
+        try {
+            return loader.get().values();
+        } catch (InterruptedException |
+                ExecutionException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
+        
+        return Collections.emptyList();
     }
 
     public EventsWindow getEventsWindow() {
@@ -218,7 +235,7 @@ public class EventsWindowController {
         }
     }
 
-    private class AddToDatabase implements ActionListener {
+    private class AddEventToDatabase implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
