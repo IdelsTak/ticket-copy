@@ -52,7 +52,6 @@ public class Configs {
 
     public void loadProperties() {
 
-        LOG.log(Level.INFO, "Loading properties from: [{0}]", "./Props");
         //Load the database connection properties
         //from file
         try (InputStream in = new FileInputStream("./Props")) {
@@ -77,8 +76,6 @@ public class Configs {
         props.setProperty("username", username);
         props.setProperty("password", String.valueOf(password));
         props.setProperty("url", url);
-
-        LOG.log(Level.INFO, "Storing properties to: [{0}]", "./Props");
 
         try (OutputStream out = new FileOutputStream("./Props")) {
             //Store with some comments 

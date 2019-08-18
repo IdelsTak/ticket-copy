@@ -189,6 +189,17 @@ public class CustomersWindowController {
         return customersWindow;
     }
 
+    /**
+     * Expose the customers who have been loaded to other classes too.
+     * <p>
+     * A class like {@link EventsWindowController} may need to read the list of
+     * customers so that it determine whether it should delete an event.
+     * <p>
+     * Remember, an event that is associated with some customers should not be
+     * deleted.
+     *
+     * @return a collection of customers from database.
+     */
     public Collection<CustomerModel> getCustomerModels() {
 
         var customersLoader = new CustomersLoader();
@@ -205,6 +216,10 @@ public class CustomersWindowController {
         return Collections.emptyList();
     }
 
+    /**
+     * Resets all the values in the customer edit fields that may have been
+     * changed due to a selection.
+     */
     private void resetTableSelection() {
         selectedRow = -1;
         idTextField.setText(null);
@@ -218,20 +233,33 @@ public class CustomersWindowController {
         issuedCheckBox.setSelected(false);
     }
 
+    /**
+     * Loads the customers data from database and add it into a local cache.
+     * <p>
+     * It uses a background thread to avoid slowing down the GUI thread.
+     */
     private static class CustomersLoader extends SwingWorker<Map<Integer, CustomerModel>, Void> {
 
+        /**
+         * Loads customers' data in a background thread.
+         *
+         * @return a cache of customer's data.
+         *
+         * @throws Exception if an interruption occurs during the execution of
+         *                   the background task.
+         */
         @Override
         protected Map<Integer, CustomerModel> doInBackground() throws Exception {
             Map<Integer, CustomerModel> cache = new TreeMap<>();
 
             var connection = Connection.getConnection();
-
+            //Only continue if there's a connection to database
             if (connection != null) {
                 String sql = "SELECT * FROM customer";
 
                 try (PreparedStatement ps = connection.prepareStatement(sql);
                      ResultSet rs = ps.executeQuery()) {
-
+                    //retrieve the data from all the rows
                     while (rs.next()) {
                         var id = rs.getInt("customer_id");
                         var event_id = rs.getString("event_id");
@@ -242,7 +270,8 @@ public class CustomersWindowController {
                         var paid = rs.getBoolean("paid");
                         var issued = rs.getBoolean("issued");
                         var bookingDate = rs.getDate("booking_date");
-
+                        //Load the event models so that we can probably 
+                        //assign one to the customer model we're about to create
                         var eventModels = new EventsWindowController().getEventModels();
                         EventModel eventModel = null;
 
@@ -253,7 +282,7 @@ public class CustomersWindowController {
                                 break;
                             }
                         }
-
+                        //Create a customer model
                         var customerModel = new CustomerModel(
                                 id,//id
                                 eventModel,//event model
@@ -264,7 +293,7 @@ public class CustomersWindowController {
                                 paid,//paid 
                                 issued,//issued
                                 bookingDate.toLocalDate()); //booking date
-
+                        //Save the customer model in a local cache
                         cache.put(id, customerModel);
                     }
 
@@ -272,8 +301,6 @@ public class CustomersWindowController {
                     LOG.log(Level.SEVERE, null, ex);
                 }
             }
-
-            LOG.log(Level.INFO, "No. of customers in database = [{0}]", cache.size());
 
             return cache;
         }

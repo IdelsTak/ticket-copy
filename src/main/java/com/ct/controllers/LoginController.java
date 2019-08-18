@@ -203,7 +203,6 @@ public class LoginController {
                         //values extracted from the row
                         var loginModel = new LoginModel(username, password.toCharArray());
 
-                        LOG.log(Level.INFO, "Loaded user: [{0}] from database", loginModel);
                         //Attach the LoginModel object
                         //to the cache
                         cache.put(id, loginModel);
@@ -212,8 +211,6 @@ public class LoginController {
                     LOG.log(Level.SEVERE, null, ex);
                 }
             }
-
-            LOG.log(Level.INFO, "No of users in database: [{0}]", cache.keySet().size());
 
             return cache;
         }

@@ -62,11 +62,15 @@ public class EventsWindowController {
     private final JButton deleteButton;
 
     public EventsWindowController() {
+        //Create the events window to display
+        //events data
         this.eventsWindow = new EventsWindow();
-
+        //Get the table where we'll add the events
+        //details as a master view
         this.eventsTable = eventsWindow.getEventsTable();
         this.eventsTableDesign = new EventsTableDesign();
-
+        //Get the fields which we will use to create
+        //the events details' view
         this.idTextField = eventsWindow.getIdTextField();
         this.remarksTextArea = eventsWindow.getRemarksTextArea();
         this.priceTextField = eventsWindow.getPriceTextField();
@@ -77,19 +81,19 @@ public class EventsWindowController {
         this.addButton = eventsWindow.getAddButton();
         this.updateButton = eventsWindow.getUpdateButton();
         this.deleteButton = eventsWindow.getDeleteButton();
-
+        //make the events table only get one event
+        //selected at a time
         ListSelectionModel selectionModel = eventsTable.getSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+        //Listen to selections and update the details
+        //view accordingly
         selectionModel.addListSelectionListener(event -> {
             int[] selectedRows = eventsTable.getSelectedRows();
 
             for (int i = 0; i < selectedRows.length; i++) {
                 selectedRow = selectedRows[i];
             }
-
-            LOG.log(Level.INFO, "Selected row = [{0}]", selectedRow);
-
+            //only continue if we have a selection
             if (selectedRow >= 0) {
                 String id = (String) eventsTableDesign.getValueAt(selectedRow, 0);
                 String type = (String) eventsTableDesign.getValueAt(selectedRow, 1);
@@ -109,18 +113,22 @@ public class EventsWindowController {
             }
 
         });
-
-        SwingWorker<Map<String, EventModel>, Void> loader = new EventsLoader();
-
+        //create the swing worker that will load
+        //the events in a background thread
+        var loader = new EventsLoader();
+        //Listen to whether the loader has finished
+        //executing its background task
         loader.addPropertyChangeListener(changeEvent -> {
             if (changeEvent.getPropertyName().equals("state")
                     && changeEvent.getNewValue().equals(DONE)) {
                 try {
                     Map<String, EventModel> result = loader.get();
+                    //Extract and load the events data that has
+                    //been got from a background thread into
+                    //the local cache
                     result.forEach(eventsCache::putIfAbsent);
-
-                    LOG.log(Level.INFO, "Events cache: [{0}]", eventsCache.values());
-
+                    //Populate the events table with the data
+                    //that has been loaded from database
                     eventsCache.values().forEach(eventModel -> {
                         eventsTableDesign.addRow(new Object[]{
                             eventModel.getEventId(),
@@ -155,9 +163,17 @@ public class EventsWindowController {
 
     }
 
+    /**
+     * Exposes the collection of events that are in database to any clients that
+     * may be interested.
+     * <p>
+     * For instance, the {@link CustomersWindowController} may ask for the list
+     * of events so that it can create customer models.
+     *
+     * @return a list of events loaded from database.
+     */
     public Collection<EventModel> getEventModels() {
-        SwingWorker<Map<String, EventModel>, Void> loader = new EventsLoader();
-
+        var loader = new EventsLoader();
         loader.execute();
 
         try {
@@ -166,7 +182,8 @@ public class EventsWindowController {
                  | ExecutionException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
-
+        //Just return an empty list if there
+        //was a problem retrieving the data
         return Collections.emptyList();
     }
 
@@ -174,6 +191,9 @@ public class EventsWindowController {
         return eventsWindow;
     }
 
+    /**
+     * Remove all the data in the details view.
+     */
     private void resetTableSelection() {
         selectedRow = -1;
         idTextField.setText(null);
@@ -185,20 +205,24 @@ public class EventsWindowController {
         remarksTextArea.setText(null);
     }
 
+    /**
+     * Loads the events data in a background thread.
+     */
     private static class EventsLoader extends SwingWorker<Map<String, EventModel>, Void> {
 
         @Override
         protected Map<String, EventModel> doInBackground() throws Exception {
             Map<String, EventModel> cache = new TreeMap<>();
-
             var connection = Connection.getConnection();
-
+            //Only continue if a valid database
+            //connection is available
             if (connection != null) {
                 String sql = "SELECT * FROM event";
 
                 try (PreparedStatement ps = connection.prepareStatement(sql);
                      ResultSet rs = ps.executeQuery()) {
-
+                    //Scan all rows and use their data
+                    //to create events models
                     while (rs.next()) {
                         var id = rs.getString("event_id");
                         var type = rs.getString("event_type");
@@ -229,8 +253,6 @@ public class EventsWindowController {
                     LOG.log(Level.SEVERE, null, ex);
                 }
             }
-
-            LOG.log(Level.INFO, "Nos. of events in db = [{0}]", cache.size());
 
             return cache;
         }
@@ -519,7 +541,8 @@ public class EventsWindowController {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             var id = idTextField.getText();
-
+            //Do not delete the event if there's
+            //a customer who's booked this event
             int result = JOptionPane.showConfirmDialog(
                     eventsWindow,
                     MessageFormat.format("Are you sure you want to delete event {0}?", id),

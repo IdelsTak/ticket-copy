@@ -58,8 +58,6 @@ public class Connection {
             }
         }
         
-        LOG.log(Level.INFO, "Connection: [{0}]", connection);
-
         return connection;
     }
 
