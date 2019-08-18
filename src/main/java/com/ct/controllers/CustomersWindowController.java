@@ -63,9 +63,12 @@ public class CustomersWindowController {
     private int selectedRow = -1;
 
     public CustomersWindowController() {
+        //Create the customers window
         this.customersWindow = new CustomersWindow();
+        //Create the customers table design
         this.customersTableDesign = new CustomerTableDesign();
-
+        //Access all the fields that will be used
+        //to edit a customer's data from the customers window
         this.customersTable = customersWindow.getCustomersTable();
         this.addButton = customersWindow.getAddButton();
         this.updateButton = customersWindow.getUpdateButton();
@@ -79,21 +82,25 @@ public class CustomersWindowController {
         this.bookingDatePicker = customersWindow.getBookingDatePicker();
         this.paidCheckBox = customersWindow.getPaidCheckBox();
         this.issuedCheckBox = customersWindow.getIssuedCheckBox();
-
+        //Create the table model for the customers table
         customersTable.setModel(customersTableDesign);
-
+        //Retrieve the customer's table selection model
+        //then force it to make only single selections
+        //at a time
         ListSelectionModel selectionModel = customersTable.getSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+        //Listen to changes in selection
+        //Then update the edit fields with the
+        //values from the selected customer
         selectionModel.addListSelectionListener(event -> {
             int[] selectedRows = customersTable.getSelectedRows();
-
+            //Retrieve the selected row
             for (int i = 0; i < selectedRows.length; i++) {
                 selectedRow = selectedRows[i];
             }
-
-            LOG.log(Level.INFO, "Selected row = [{0}]", selectedRow);
-
+            //If there's a selection update the
+            //fields with the values from the 
+            //selected customer
             if (selectedRow >= 0) {
                 int id = (int) customersTableDesign.getValueAt(selectedRow, 0);
                 String name = (String) customersTableDesign.getValueAt(selectedRow, 1);
@@ -118,12 +125,18 @@ public class CustomersWindowController {
 
         });
 
-        SwingWorker<Map<Integer, CustomerModel>, Void> customersLoader = new CustomersLoader();
-
+        //Create a swing worker named CustomersLoader
+        //to retrieve customer data from database
+        var customersLoader = new CustomersLoader();
+        //Listen to changes in the worker's progress
+        //If the thread finishes loading the data
+        //update the customers table with the retrieved values
         customersLoader.addPropertyChangeListener(event -> {
             if (event.getPropertyName().equals("state")
                     && event.getNewValue().equals(DONE)) {
                 try {
+                    //Attach all the customers' data to a local cache
+                    //for easier access
                     Map<Integer, CustomerModel> result = customersLoader.get();
                     result.forEach(customersCache::putIfAbsent);
 
@@ -147,21 +160,28 @@ public class CustomersWindowController {
                 }
             }
         });
-
+        //Start loading the customers' data
+        //in a background thread
         customersLoader.execute();
-
+        //Retrieve the events from database
+        //so that we can add them to the dropdown
+        //which allows a customer to select an event
         var eventModels = new EventsWindowController().getEventModels();
-
-        LOG.log(Level.INFO, "Events to add to combobox = [{0}]", eventModels.size());
-
+        //Add all the events to the dropdown
         eventModels.forEach((eventModel) -> {
             eventsComboBox.addItem(eventModel);
         });
-
+        //But don't select anything yet
+        //Leave that to the user
         eventsComboBox.setSelectedIndex(-1);
-
+        //create an action that will add customers to database
+        //the attach it to the add button
         addButton.addActionListener(new AddCustomerToDatabase());
+        //create an action that will update customers' details in database
+        //then attach it to the update button
         updateButton.addActionListener(new UpdateCustomerInDatabase());
+        //create an action that will delete customers from database
+        //then attach it to the delete button
         deleteButton.addActionListener(new DeleteCustomerFromDatabase());
     }
 
