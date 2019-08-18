@@ -432,7 +432,7 @@ public class EventsWindowController {
             try {
                 price = priceText == null || priceText.isBlank()
                         ? BigDecimal.ZERO
-                        : new BigDecimal(priceText.trim()).setScale(2, RoundingMode.HALF_UP);;
+                        : new BigDecimal(priceText.trim()).setScale(2, RoundingMode.HALF_UP);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(
                         eventsWindow,//Parent component

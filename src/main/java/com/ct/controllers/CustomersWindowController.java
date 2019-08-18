@@ -40,8 +40,6 @@ import javax.swing.SwingWorker;
 import static javax.swing.SwingWorker.StateValue.DONE;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.Document;
-import javax.swing.text.NumberFormatter;
 
 /**
  *
@@ -418,7 +416,7 @@ public class CustomersWindowController {
             try {
                 ticketsCost = totalCost == null || totalCost.isBlank()
                               ? BigDecimal.ZERO
-                              : new BigDecimal(totalCost.trim()).setScale(2, RoundingMode.HALF_UP);;
+                              : new BigDecimal(totalCost.trim()).setScale(2, RoundingMode.HALF_UP);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(
                         customersWindow,//Parent component
@@ -566,7 +564,7 @@ public class CustomersWindowController {
             try {
                 ticketsCost = totalCost == null || totalCost.isBlank()
                               ? BigDecimal.ZERO
-                              : new BigDecimal(totalCost.trim()).setScale(2, RoundingMode.HALF_UP);;
+                              : new BigDecimal(totalCost.trim()).setScale(2, RoundingMode.HALF_UP);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(
                         customersWindow,//Parent component
