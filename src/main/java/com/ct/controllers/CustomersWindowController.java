@@ -261,15 +261,16 @@ public class CustomersWindowController {
         paidCheckBox.setSelected(false);
         issuedCheckBox.setSelected(false);
     }
+
     /**
      * Calculates the total ticket cost.
-     * 
+     * <p>
      * total ticket cost = (ticket cost) x (no. of tickets)
      */
     private void calculateTotalTicketCost() {
         BigDecimal totalTicketCost = BigDecimal.ZERO;
 
-        if (selectedRow >= 0 && eventsComboBox.getSelectedItem() != null) {
+        if (/*selectedRow >= 0 &&*/ eventsComboBox.getSelectedItem() != null) {
             var eventModel = (EventModel) eventsComboBox.getSelectedItem();
 
             if (eventModel != null) {
@@ -281,7 +282,8 @@ public class CustomersWindowController {
 
                 try {
                     numberOfTickets = Integer.parseInt(noOfTickets);
-                } catch (NumberFormatException numberFormatException) {
+                } catch (NumberFormatException nfe) {
+                    System.out.printf("number format exception: [%s]", nfe);
                 }
 
                 if (numberOfTickets != null) {
