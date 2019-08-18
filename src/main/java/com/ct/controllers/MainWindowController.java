@@ -6,9 +6,11 @@
 package com.ct.controllers;
 
 import com.ct.views.MainWindow;
+import com.ct.views.ReportsPopup;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.text.MessageFormat;
+import java.awt.event.ActionListener;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 /**
@@ -57,12 +59,32 @@ public class MainWindowController {
             if (result != JOptionPane.YES_OPTION) {
                 return;
             }
-            
+
             mainWindow.dispose();
-            
+
             var loginController = new LoginController();
             loginController.displayLogin();
         });
+        //Create an action that dispalys a popup
+        //window for reports
+        ActionListener showReportsPopup = (actionEvent) -> {
+            var reportsPopup = new ReportsPopup(mainWindow, true);
+            var closeButton = reportsPopup.getCloseButton();
+
+            closeButton.addActionListener(e -> {
+                reportsPopup.dispose();
+            });
+
+            reportsPopup.setVisible(true);
+        };
+
+        var salesReportLast30DaysMenuItem = mainWindow.getSalesReportLast30DaysMenuItem();
+        var noOfTicketsSoldMenuItem = mainWindow.getNoOfTicketsSoldMenuItem();
+        var totalSalesMenuItem = mainWindow.getTotalSalesMenuItem();
+
+        salesReportLast30DaysMenuItem.addActionListener(showReportsPopup);
+        noOfTicketsSoldMenuItem.addActionListener(showReportsPopup);
+        totalSalesMenuItem.addActionListener(showReportsPopup);
     }
 
     public void displayMainWindow() {
