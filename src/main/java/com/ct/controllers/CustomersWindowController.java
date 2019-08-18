@@ -20,6 +20,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
@@ -165,6 +167,22 @@ public class CustomersWindowController {
 
     public CustomersWindow getCustomersWindow() {
         return customersWindow;
+    }
+
+    public Collection<CustomerModel> getCustomerModels() {
+        
+        var customersLoader = new CustomersLoader();
+        
+        customersLoader.execute();
+        
+        try {
+            return customersLoader.get().values();
+        } catch (InterruptedException |
+                ExecutionException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
+
+        return Collections.emptyList();
     }
 
     private void resetTableSelection() {
@@ -564,16 +582,16 @@ public class CustomersWindowController {
                 String sql = "DELETE FROM customer WHERE customer_id = ?";
 
                 try (PreparedStatement ps = connection.prepareStatement(sql)) {
-                     ps.setString(1, id);
-                     
-                     int deletedRows = ps.executeUpdate();
+                    ps.setString(1, id);
+
+                    int deletedRows = ps.executeUpdate();
 
                     LOG.log(Level.INFO, "Deleted rows = [{0}]", deletedRows);
 
                     final int row = selectedRow;
 
                     resetTableSelection();
-                    
+
                     SwingWorker<Map<Integer, CustomerModel>, Void> customersLoader = new CustomersLoader();
 
                     customersLoader.addPropertyChangeListener(changeEvent -> {

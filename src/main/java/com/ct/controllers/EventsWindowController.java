@@ -6,6 +6,7 @@
 package com.ct.controllers;
 
 import com.ct.database.Connection;
+import com.ct.models.CustomerModel;
 import com.ct.models.EventModel;
 import com.ct.models.EventsTableModel;
 import com.ct.views.EventsWindow;
@@ -156,16 +157,16 @@ public class EventsWindowController {
 
     public Collection<EventModel> getEventModels() {
         SwingWorker<Map<String, EventModel>, Void> loader = new EventsLoader();
-        
+
         loader.execute();
-        
+
         try {
             return loader.get().values();
-        } catch (InterruptedException |
-                ExecutionException ex) {
+        } catch (InterruptedException
+                 | ExecutionException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
-        
+
         return Collections.emptyList();
     }
 
@@ -526,6 +527,27 @@ public class EventsWindowController {
                     JOptionPane.YES_NO_CANCEL_OPTION);
 
             if (result != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            var customersWindowController = new CustomersWindowController();
+            var customerModels = customersWindowController.getCustomerModels();
+            boolean canDelete = true;
+
+            for (CustomerModel customerModel : customerModels) {
+                EventModel event = customerModel.getEvent();
+                if (event != null && event.getEventId().equals(id)) {
+                    canDelete = false;
+                    break;
+                }
+            }
+
+            if (!canDelete) {
+                JOptionPane.showMessageDialog(
+                        eventsWindow,//Parent component
+                        "Event should not be deleted. It has been booked already.",//Message
+                        "Error",//title
+                        JOptionPane.ERROR_MESSAGE);//Message type
                 return;
             }
 
