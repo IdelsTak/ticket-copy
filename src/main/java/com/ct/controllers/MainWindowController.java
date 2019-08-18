@@ -10,8 +10,8 @@ import com.ct.views.ReportsPopup;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionListener;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -39,6 +39,16 @@ public class MainWindowController {
         var customersMenuItem = mainWindow.getCustomersMenuItem();
 
         customersMenuItem.addActionListener(actionEvent -> {
+            primaryPanel.removeAll();
+            var customersWindowController = new CustomersWindowController();
+            primaryPanel.add(
+                    customersWindowController.getCustomersWindow(),
+                    BorderLayout.CENTER);
+            primaryPanel.revalidate();
+        });
+
+        //Show customers window on startup
+        SwingUtilities.invokeLater(() -> {
             primaryPanel.removeAll();
             var customersWindowController = new CustomersWindowController();
             primaryPanel.add(
@@ -93,4 +103,5 @@ public class MainWindowController {
             mainWindow.setVisible(true);
         });
     }
+
 }
