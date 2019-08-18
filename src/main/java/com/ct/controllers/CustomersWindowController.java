@@ -190,15 +190,15 @@ public class CustomersWindowController {
     }
 
     public Collection<CustomerModel> getCustomerModels() {
-        
+
         var customersLoader = new CustomersLoader();
-        
+
         customersLoader.execute();
-        
+
         try {
             return customersLoader.get().values();
-        } catch (InterruptedException |
-                ExecutionException ex) {
+        } catch (InterruptedException
+                 | ExecutionException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
 
