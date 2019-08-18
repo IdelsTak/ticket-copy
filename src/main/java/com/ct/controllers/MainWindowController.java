@@ -8,7 +8,8 @@ package com.ct.controllers;
 import com.ct.views.MainWindow;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import javax.swing.JMenuItem;
+import java.text.MessageFormat;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -42,6 +43,25 @@ public class MainWindowController {
                     customersWindowController.getCustomersWindow(),
                     BorderLayout.CENTER);
             primaryPanel.revalidate();
+        });
+
+        var signoutMenuItem = mainWindow.getSignoutMenuItem();
+
+        signoutMenuItem.addActionListener(actionEvent -> {
+            int result = JOptionPane.showConfirmDialog(
+                    mainWindow,//parent component
+                    "Are you sure you want to sign out?",//message
+                    "Confirm Signout",//title
+                    JOptionPane.YES_NO_CANCEL_OPTION);//option type
+
+            if (result != JOptionPane.YES_OPTION) {
+                return;
+            }
+            
+            mainWindow.dispose();
+            
+            var loginController = new LoginController();
+            loginController.displayLogin();
         });
     }
 
