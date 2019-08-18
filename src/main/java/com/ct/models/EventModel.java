@@ -24,12 +24,12 @@ public class EventModel {
     private String remark;
 
     public EventModel(
-            String eventId, 
-            String eventType, 
-            String eventName, 
-            String venue, 
-            LocalDateTime dateTime, 
-            BigDecimal ticketPrice, 
+            String eventId,
+            String eventType,
+            String eventName,
+            String venue,
+            LocalDateTime dateTime,
+            BigDecimal ticketPrice,
             String remark) {
         this.eventId = eventId;
         this.eventType = eventType;
@@ -76,7 +76,6 @@ public class EventModel {
         this.dateTime = dateTime;
     }
 
-
     public BigDecimal getTicketPrice() {
         return ticketPrice;
     }
@@ -95,14 +94,8 @@ public class EventModel {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 97 * hash + Objects.hashCode(this.eventId);
-        hash = 97 * hash + Objects.hashCode(this.eventType);
-        hash = 97 * hash + Objects.hashCode(this.eventName);
-        hash = 97 * hash + Objects.hashCode(this.venue);
-        hash = 97 * hash + Objects.hashCode(this.dateTime);
-        hash = 97 * hash + Objects.hashCode(this.ticketPrice);
-        hash = 97 * hash + Objects.hashCode(this.remark);
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.eventId);
         return hash;
     }
 
@@ -118,25 +111,7 @@ public class EventModel {
             return false;
         }
         final EventModel other = (EventModel) obj;
-        if (!Objects.equals(this.eventId, other.eventId)) {
-            return false;
-        }
-        if (!Objects.equals(this.eventType, other.eventType)) {
-            return false;
-        }
-        if (!Objects.equals(this.eventName, other.eventName)) {
-            return false;
-        }
-        if (!Objects.equals(this.venue, other.venue)) {
-            return false;
-        }
-        if (!Objects.equals(this.remark, other.remark)) {
-            return false;
-        }
-        if (!Objects.equals(this.dateTime, other.dateTime)) {
-            return false;
-        }
-        return Objects.equals(this.ticketPrice, other.ticketPrice);
+        return Objects.equals(this.eventId, other.eventId);
     }
 
     @Override

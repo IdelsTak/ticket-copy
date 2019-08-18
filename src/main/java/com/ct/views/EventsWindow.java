@@ -111,6 +111,7 @@ public class EventsWindow extends javax.swing.JPanel {
         typeLabel.setText("Type:");
 
         typeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Concert", "Theater" }));
+        typeComboBox.setSelectedIndex(-1);
 
         nameLabel.setText("Name:");
 
