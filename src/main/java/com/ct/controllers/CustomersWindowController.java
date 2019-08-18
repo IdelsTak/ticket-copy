@@ -18,6 +18,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.TreeMap;
@@ -42,7 +43,7 @@ public class CustomersWindowController {
 
     private static final Logger LOG = Logger.getLogger(CustomersWindowController.class.getName());
     private final CustomersWindow customersWindow;
-    private final CustomerTableModel customerTableModel;
+    private final CustomerTableModel customersTableModel;
     private final JTable customersTable;
     private final Map<Integer, CustomerModel> customersCache = new TreeMap<>();
     private final JButton addButton;
@@ -61,7 +62,7 @@ public class CustomersWindowController {
 
     public CustomersWindowController() {
         this.customersWindow = new CustomersWindow();
-        this.customerTableModel = new CustomerTableModel();
+        this.customersTableModel = new CustomerTableModel();
 
         this.customersTable = customersWindow.getCustomersTable();
         this.addButton = customersWindow.getAddButton();
@@ -77,8 +78,8 @@ public class CustomersWindowController {
         this.paidCheckBox = customersWindow.getPaidCheckBox();
         this.issuedCheckBox = customersWindow.getIssuedCheckBox();
 
-        customersTable.setModel(customerTableModel);
-        
+        customersTable.setModel(customersTableModel);
+
         ListSelectionModel selectionModel = customersTable.getSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -92,15 +93,15 @@ public class CustomersWindowController {
             LOG.log(Level.INFO, "Selected row = [{0}]", selectedRow);
 
             if (selectedRow >= 0) {
-                int id = (int) customerTableModel.getValueAt(selectedRow, 0);
-                String name = (String) customerTableModel.getValueAt(selectedRow, 1);
-                int phone = (int) customerTableModel.getValueAt(selectedRow, 2);
-                EventModel eventModel = (EventModel) customerTableModel.getValueAt(selectedRow, 3);
-                int noOfTickets = (int) customerTableModel.getValueAt(selectedRow, 4);
-                BigDecimal totalCost = (BigDecimal) customerTableModel.getValueAt(selectedRow, 5);
-                LocalDate bookingDate = (LocalDate) customerTableModel.getValueAt(selectedRow, 6);
-                boolean paid = (boolean) customerTableModel.getValueAt(selectedRow, 7);
-                boolean issued = (boolean) customerTableModel.getValueAt(selectedRow, 8);
+                int id = (int) customersTableModel.getValueAt(selectedRow, 0);
+                String name = (String) customersTableModel.getValueAt(selectedRow, 1);
+                int phone = (int) customersTableModel.getValueAt(selectedRow, 2);
+                EventModel eventModel = (EventModel) customersTableModel.getValueAt(selectedRow, 3);
+                int noOfTickets = (int) customersTableModel.getValueAt(selectedRow, 4);
+                BigDecimal totalCost = (BigDecimal) customersTableModel.getValueAt(selectedRow, 5);
+                LocalDate bookingDate = (LocalDate) customersTableModel.getValueAt(selectedRow, 6);
+                boolean paid = (boolean) customersTableModel.getValueAt(selectedRow, 7);
+                boolean issued = (boolean) customersTableModel.getValueAt(selectedRow, 8);
 
                 idTextField.setText(Integer.toString(id));
                 nameTextField.setText(name);
@@ -125,7 +126,7 @@ public class CustomersWindowController {
                     result.forEach(customersCache::putIfAbsent);
 
                     customersCache.values().forEach(customer -> {
-                        customerTableModel.addRow(new Object[]{
+                        customersTableModel.addRow(new Object[]{
                             customer.getId(),
                             customer.getName(),
                             customer.getPhone(),
@@ -159,6 +160,7 @@ public class CustomersWindowController {
 
         addButton.addActionListener(new AddCustomerToDatabase());
         updateButton.addActionListener(new UpdateCustomerInDatabase());
+        deleteButton.addActionListener(new DeleteCustomerFromDatabase());
     }
 
     public CustomersWindow getCustomersWindow() {
@@ -351,7 +353,7 @@ public class CustomersWindowController {
                                     //Map will return null if it adds
                                     //the new customer model to the cache
                                     if (returnedModel == null) {
-                                        customerTableModel.addRow(new Object[]{
+                                        customersTableModel.addRow(new Object[]{
                                             key,
                                             name,
                                             phoneNumber,
@@ -505,9 +507,9 @@ public class CustomersWindowController {
                                 Map<Integer, CustomerModel> result = eventsLoader.get();
                                 result.forEach(customersCache::putIfAbsent);
 
-                                customerTableModel.removeRow(row);
+                                customersTableModel.removeRow(row);
 
-                                customerTableModel.insertRow(row, new Object[]{
+                                customersTableModel.insertRow(row, new Object[]{
                                     id,
                                     name,
                                     phoneNumber,
@@ -530,6 +532,69 @@ public class CustomersWindowController {
 
                 } catch (SQLException ex) {
                     Logger.getLogger(CustomersWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    private class DeleteCustomerFromDatabase implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            var id = idTextField.getText();
+            var name = nameTextField.getText();
+
+            int result = JOptionPane.showConfirmDialog(
+                    customersWindow,
+                    MessageFormat.format(
+                            "Are you sure you want to delete {0} - {1}?",
+                            new Object[]{
+                                id,
+                                name}),
+                    "Confirm Customer Deletion",
+                    JOptionPane.YES_NO_CANCEL_OPTION);
+
+            if (result != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            var connection = Connection.getConnection();
+
+            if (connection != null) {
+                String sql = "DELETE FROM customer WHERE customer_id = ?";
+
+                try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                     ps.setString(1, id);
+                     
+                     int deletedRows = ps.executeUpdate();
+
+                    LOG.log(Level.INFO, "Deleted rows = [{0}]", deletedRows);
+
+                    final int row = selectedRow;
+
+                    resetTableSelection();
+                    
+                    SwingWorker<Map<Integer, CustomerModel>, Void> customersLoader = new CustomersLoader();
+
+                    customersLoader.addPropertyChangeListener(changeEvent -> {
+                        if (changeEvent.getPropertyName().equals("state")
+                                && changeEvent.getNewValue().equals(DONE)) {
+                            try {
+                                Map<Integer, CustomerModel> map = customersLoader.get();
+                                map.forEach(customersCache::putIfAbsent);
+
+                                customersTableModel.removeRow(row);
+
+                            } catch (InterruptedException
+                                     | ExecutionException ex) {
+                                LOG.log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    });
+                    //Start the background thread
+                    customersLoader.execute();
+                } catch (SQLException ex) {
+                    LOG.log(Level.SEVERE, null, ex);
                 }
             }
         }
