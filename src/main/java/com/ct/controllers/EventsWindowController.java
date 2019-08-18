@@ -56,6 +56,7 @@ public class EventsWindowController {
     private final JComboBox<String> typeComboBox;
     private final JButton addButton;
     private final JButton updateButton;
+    private final JButton deleteButton;
 
     public EventsWindowController() {
         this.eventsWindow = new EventsWindow();
@@ -72,6 +73,7 @@ public class EventsWindowController {
         this.typeComboBox = eventsWindow.getTypeComboBox();
         this.addButton = eventsWindow.getAddButton();
         this.updateButton = eventsWindow.getUpdateButton();
+        this.deleteButton = eventsWindow.getDeleteButton();
 
         ListSelectionModel selectionModel = eventsTable.getSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -144,6 +146,10 @@ public class EventsWindowController {
         //Create an action for modifying events that are
         //in the database and then attach it to the update button
         updateButton.addActionListener(new UpdateEventInDatabase());
+        //Create an action that deletes a selected event from
+        //database, then attach the action to the delete button
+        deleteButton.addActionListener(new DeleteEventFromDatabase());
+
     }
 
     public EventsWindow getEventsWindow() {
@@ -353,14 +359,7 @@ public class EventsWindowController {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             var id = idTextField.getText();
-//            if (eventsCache.keySet().contains(id)) {
-//                JOptionPane.showMessageDialog(
-//                        eventsWindow,//Parent component
-//                        MessageFormat.format("Id: {0} exists already. Please enter a new Id value.", id),//Message
-//                        "Error",//title
-//                        JOptionPane.ERROR_MESSAGE);//Message type
-//                return;
-//            }
+
             var type = (String) typeComboBox.getSelectedItem();
 
             if (type == null) {
@@ -449,15 +448,15 @@ public class EventsWindowController {
                     ps.setFloat(6, price.floatValue());
                     ps.setString(7, remarks);
                     ps.setString(8, id);
-                    
+
                     int updatedRows = ps.executeUpdate();
-                    
+
                     LOG.log(Level.INFO, "Updated rows = [{0}]", updatedRows);
-                    
+
                     final int row = selectedRow;
-                    
+
                     resetTableSelection();
-                    
+
                     SwingWorker<Map<String, EventModel>, Void> eventsLoader = new EventsLoader();
 
                     eventsLoader.addPropertyChangeListener(changeEvent -> {
@@ -468,7 +467,7 @@ public class EventsWindowController {
                                 result.forEach(eventsCache::putIfAbsent);
 
                                 LOG.log(Level.INFO, "Events cache: [{0}]", eventsCache.values());
-                                
+
                                 eventsTableModel.removeRow(row);
 
                                 eventsTableModel.insertRow(row, new Object[]{
@@ -480,6 +479,67 @@ public class EventsWindowController {
                                     price,
                                     remarks
                                 });
+
+                            } catch (InterruptedException
+                                     | ExecutionException ex) {
+                                LOG.log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    });
+                    //Start the background thread
+                    eventsLoader.execute();
+
+                } catch (SQLException ex) {
+                    LOG.log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    private class DeleteEventFromDatabase implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            var id = idTextField.getText();
+
+            int result = JOptionPane.showConfirmDialog(
+                    eventsWindow,
+                    MessageFormat.format("Are you sure you want to delete event {0}?", id),
+                    "Confirm Event Deletion",
+                    JOptionPane.YES_NO_CANCEL_OPTION);
+
+            if (result != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            var connection = Connection.getConnection();
+
+            if (connection != null) {
+                String sql = "DELETE FROM event WHERE event_id = ?";
+
+                try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                    ps.setString(1, id);
+
+                    int deletedRows = ps.executeUpdate();
+
+                    LOG.log(Level.INFO, "Deleted rows = [{0}]", deletedRows);
+
+                    final int row = selectedRow;
+
+                    resetTableSelection();
+
+                    SwingWorker<Map<String, EventModel>, Void> eventsLoader = new EventsLoader();
+
+                    eventsLoader.addPropertyChangeListener(changeEvent -> {
+                        if (changeEvent.getPropertyName().equals("state")
+                                && changeEvent.getNewValue().equals(DONE)) {
+                            try {
+                                Map<String, EventModel> map = eventsLoader.get();
+                                map.forEach(eventsCache::putIfAbsent);
+
+                                LOG.log(Level.INFO, "Events cache: [{0}]", eventsCache.values());
+
+                                eventsTableModel.removeRow(row);
 
                             } catch (InterruptedException
                                      | ExecutionException ex) {
