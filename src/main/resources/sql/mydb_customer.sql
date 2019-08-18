@@ -16,33 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `event`
+-- Table structure for table `customer`
 --
 
-DROP TABLE IF EXISTS `event`;
+DROP TABLE IF EXISTS `customer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `event` (
+CREATE TABLE `customer` (
+  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
   `event_id` varchar(45) NOT NULL,
-  `event_type` varchar(45) DEFAULT NULL,
-  `event_name` varchar(45) DEFAULT NULL,
-  `venue` varchar(45) DEFAULT NULL,
-  `event_date` date DEFAULT NULL,
-  `event_time` time DEFAULT NULL,
-  `ticket_price` float DEFAULT NULL,
-  `remark` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`event_id`)
+  `customer_name` varchar(45) NOT NULL,
+  `phone` int(11) NOT NULL,
+  `number_of_tickets` int(11) NOT NULL,
+  `total_tickets_cost` float NOT NULL,
+  `paid` tinyint(1) NOT NULL,
+  `issued` tinyint(1) NOT NULL,
+  `booking_date` date NOT NULL,
+  PRIMARY KEY (`customer_id`),
+  KEY `fk_customer_event_idx` (`event_id`),
+  CONSTRAINT `fk_customer_event` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `event`
+-- Dumping data for table `customer`
 --
 
-LOCK TABLES `event` WRITE;
-/*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES ('event#2','Concert','ColdPlay Tour','The Big Hall','2019-08-30','04:00:00',45,'Come one come all'),('event#3','Concert','Some Concert','Here & There','2019-08-23','02:00:00',78,'loaoalal alalal'),('event#5','Concert','Holoo','Near','2019-08-29','01:30:00',78,'aaaaa'),('event#6','Theater','Jokauau','Korall','2019-08-17','02:00:00',75,'weasasas'),('event#7','Concert','Here & Far','Nearaaaa','2019-08-29','01:30:00',78,'aaaaa'),('event#8','Concert','Holooqq','Nearsss','2019-08-29','01:30:00',78,'aaaaa'),('event#9','Theater','Holooqq','Nearsss','2019-08-29','01:30:00',78,'aaaaa'),('good_vent','Theater','A Good Celebration','Kolkata','2019-08-18','02:30:00',23,'Some event Some event Some event Some event');
-/*!40000 ALTER TABLE `event` ENABLE KEYS */;
+LOCK TABLES `customer` WRITE;
+/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

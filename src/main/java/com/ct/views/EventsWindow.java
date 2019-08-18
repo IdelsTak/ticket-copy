@@ -20,7 +20,7 @@ public class EventsWindow extends javax.swing.JPanel {
 
     private static final long serialVersionUID = 6107985026803654276L;
 
-    /** Creates new form EventWindow */
+    /** Creates new form EventWindow. */
     public EventsWindow() {
         initComponents();
     }

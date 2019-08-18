@@ -30,18 +30,31 @@ public class MainWindow extends javax.swing.JFrame {
         return primaryPanel;
     }
 
-    public JMenuItem getCustomerMenuItem() {
-        return customerMenuItem;
+    public JMenuItem getCustomersMenuItem() {
+        return customersMenuItem;
     }
 
-    public JMenuItem getEventMenuItem() {
-        return eventMenuItem;
+    public JMenuItem getEventsMenuItem() {
+        return eventsMenuItem;
     }
 
-    public JMenuItem getReportsMenuItem() {
-        return reportsMenuItem;
+    public JMenuItem getNoOfTicketsSoldMenuItem() {
+        return noOfTicketsSoldMenuItem;
     }
 
+    public JMenuItem getSalesReportLast30DaysMenuItem() {
+        return salesReportLast30DaysMenuItem;
+    }
+
+    public JMenuItem getSignoutMenuItem() {
+        return signoutMenuItem;
+    }
+
+    public JMenuItem getTotalSalesMenuItem() {
+        return totalSalesMenuItem;
+    }
+
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -54,9 +67,13 @@ public class MainWindow extends javax.swing.JFrame {
         primaryPanel = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
         menu = new javax.swing.JMenu();
-        eventMenuItem = new javax.swing.JMenuItem();
-        customerMenuItem = new javax.swing.JMenuItem();
-        reportsMenuItem = new javax.swing.JMenuItem();
+        eventsMenuItem = new javax.swing.JMenuItem();
+        customersMenuItem = new javax.swing.JMenuItem();
+        reportsMenu = new javax.swing.JMenu();
+        salesReportLast30DaysMenuItem = new javax.swing.JMenuItem();
+        noOfTicketsSoldMenuItem = new javax.swing.JMenuItem();
+        totalSalesMenuItem = new javax.swing.JMenuItem();
+        signoutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Welcome to Colombo Theater");
@@ -66,14 +83,27 @@ public class MainWindow extends javax.swing.JFrame {
 
         menu.setText("Menu");
 
-        eventMenuItem.setText("Event");
-        menu.add(eventMenuItem);
+        eventsMenuItem.setText("Events");
+        menu.add(eventsMenuItem);
 
-        customerMenuItem.setText("Customer");
-        menu.add(customerMenuItem);
+        customersMenuItem.setText("Customers");
+        menu.add(customersMenuItem);
 
-        reportsMenuItem.setText("Reports");
-        menu.add(reportsMenuItem);
+        reportsMenu.setText("Reports");
+
+        salesReportLast30DaysMenuItem.setText("Sales Last 30 Days");
+        reportsMenu.add(salesReportLast30DaysMenuItem);
+
+        noOfTicketsSoldMenuItem.setText("No of Tickets Sold - Count");
+        reportsMenu.add(noOfTicketsSoldMenuItem);
+
+        totalSalesMenuItem.setText("Total Sales Value");
+        reportsMenu.add(totalSalesMenuItem);
+
+        menu.add(reportsMenu);
+
+        signoutMenuItem.setText("Sign out");
+        menu.add(signoutMenuItem);
 
         menuBar.add(menu);
 
@@ -85,11 +115,15 @@ public class MainWindow extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem customerMenuItem;
-    private javax.swing.JMenuItem eventMenuItem;
+    private javax.swing.JMenuItem customersMenuItem;
+    private javax.swing.JMenuItem eventsMenuItem;
     private javax.swing.JMenu menu;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem noOfTicketsSoldMenuItem;
     private javax.swing.JPanel primaryPanel;
-    private javax.swing.JMenuItem reportsMenuItem;
+    private javax.swing.JMenu reportsMenu;
+    private javax.swing.JMenuItem salesReportLast30DaysMenuItem;
+    private javax.swing.JMenuItem signoutMenuItem;
+    private javax.swing.JMenuItem totalSalesMenuItem;
     // End of variables declaration//GEN-END:variables
 }

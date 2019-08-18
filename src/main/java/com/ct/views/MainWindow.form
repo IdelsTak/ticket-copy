@@ -9,19 +9,41 @@
             <Property name="text" type="java.lang.String" value="Menu"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="eventMenuItem">
+            <MenuItem class="javax.swing.JMenuItem" name="eventsMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Event"/>
+                <Property name="text" type="java.lang.String" value="Events"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="customerMenuItem">
+            <MenuItem class="javax.swing.JMenuItem" name="customersMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Customer"/>
+                <Property name="text" type="java.lang.String" value="Customers"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="reportsMenuItem">
+            <Menu class="javax.swing.JMenu" name="reportsMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Reports"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="salesReportLast30DaysMenuItem">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Sales Last 30 Days"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="noOfTicketsSoldMenuItem">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="No of Tickets Sold - Count"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="totalSalesMenuItem">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Total Sales Value"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <MenuItem class="javax.swing.JMenuItem" name="signoutMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Sign out"/>
               </Properties>
             </MenuItem>
           </SubComponents>

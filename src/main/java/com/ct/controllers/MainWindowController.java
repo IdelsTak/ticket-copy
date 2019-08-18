@@ -5,12 +5,10 @@
  */
 package com.ct.controllers;
 
-import com.ct.views.EventsWindow;
 import com.ct.views.MainWindow;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 
 /**
  *
@@ -23,13 +21,26 @@ public class MainWindowController {
     public MainWindowController() {
         this.mainWindow = new MainWindow();
 
-        JMenuItem eventMenuItem = mainWindow.getEventMenuItem();
-        JPanel primaryPanel = mainWindow.getPrimaryPanel();
+        var eventsMenuItem = mainWindow.getEventsMenuItem();
+        var primaryPanel = mainWindow.getPrimaryPanel();
 
-        eventMenuItem.addActionListener(actionEvent -> {
+        eventsMenuItem.addActionListener(actionEvent -> {
             primaryPanel.removeAll();
             var eventsWindowController = new EventsWindowController();
-            primaryPanel.add(eventsWindowController.getEventsWindow(), BorderLayout.CENTER);
+            primaryPanel.add(
+                    eventsWindowController.getEventsWindow(),
+                    BorderLayout.CENTER);
+            primaryPanel.revalidate();
+        });
+
+        var customersMenuItem = mainWindow.getCustomersMenuItem();
+
+        customersMenuItem.addActionListener(actionEvent -> {
+            primaryPanel.removeAll();
+            var customersWindowController = new CustomersWindowController();
+            primaryPanel.add(
+                    customersWindowController.getCustomersWindow(),
+                    BorderLayout.CENTER);
             primaryPanel.revalidate();
         });
     }
