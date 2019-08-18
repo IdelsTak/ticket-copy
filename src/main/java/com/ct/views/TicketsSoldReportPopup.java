@@ -11,7 +11,7 @@ import javax.swing.JButton;
  *
  * @author Hiram K.
  */
-public class ReportsPopup extends javax.swing.JDialog {
+public class TicketsSoldReportPopup extends javax.swing.JDialog {
 
     private static final long serialVersionUID = -649165273924635151L;
 
@@ -20,7 +20,7 @@ public class ReportsPopup extends javax.swing.JDialog {
      * @param parent
      * @param modal 
      */
-    public ReportsPopup(java.awt.Frame parent, boolean modal) {
+    public TicketsSoldReportPopup(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -43,12 +43,11 @@ public class ReportsPopup extends javax.swing.JDialog {
         closeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Test Report");
+        setTitle("Number of Tickets Sold Report");
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
-        setPreferredSize(new java.awt.Dimension(450, 300));
 
         testLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        testLabel.setText("Test Report");
+        testLabel.setText("Report 2");
         getContentPane().add(testLabel, java.awt.BorderLayout.CENTER);
 
         closeButton.setText("Close");
@@ -95,20 +94,23 @@ public class ReportsPopup extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ReportsPopup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TicketsSoldReportPopup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ReportsPopup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TicketsSoldReportPopup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ReportsPopup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TicketsSoldReportPopup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ReportsPopup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TicketsSoldReportPopup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ReportsPopup dialog = new ReportsPopup(new javax.swing.JFrame(), true);
+                TicketsSoldReportPopup dialog = new TicketsSoldReportPopup(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

@@ -6,7 +6,9 @@
 package com.ct.controllers;
 
 import com.ct.views.MainWindow;
-import com.ct.views.ReportsPopup;
+import com.ct.views.Last30DaysSalesReportPopup;
+import com.ct.views.TicketsSoldReportPopup;
+import com.ct.views.TotalSalesReportPopup;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionListener;
@@ -75,22 +77,45 @@ public class MainWindowController {
             var loginController = new LoginController();
             loginController.displayLogin();
         });
-        //Create an action that dispalys a popup
-        //window for reports
-        ActionListener showReportsPopup = (actionEvent) -> {
-            var reportsPopup = new ReportsPopup(mainWindow, true);
-            var closeButton = reportsPopup.getCloseButton();
-
-            closeButton.addActionListener(e -> {
-                reportsPopup.dispose();
-            });
-
-            reportsPopup.setVisible(true);
-        };
-
         var salesReportLast30DaysMenuItem = mainWindow.getSalesReportLast30DaysMenuItem();
         var noOfTicketsSoldMenuItem = mainWindow.getNoOfTicketsSoldMenuItem();
         var totalSalesMenuItem = mainWindow.getTotalSalesMenuItem();
+
+        //Create an action that displays a popup
+        //window for reports
+        ActionListener showReportsPopup = (actionEvent) -> {
+            if (actionEvent.getSource() == salesReportLast30DaysMenuItem) {
+
+                var popup = new Last30DaysSalesReportPopup(mainWindow, true);
+                var closeButton = popup.getCloseButton();
+
+                closeButton.addActionListener(e -> {
+                    popup.dispose();
+                });
+
+                popup.setVisible(true);
+            } else if (actionEvent.getSource() == noOfTicketsSoldMenuItem) {
+                var popup = new TicketsSoldReportPopup(mainWindow, true);
+                var closeButton = popup.getCloseButton();
+
+                closeButton.addActionListener(e -> {
+                    popup.dispose();
+                });
+
+                popup.setVisible(true);
+
+            } else if (actionEvent.getSource() == totalSalesMenuItem) {
+                var popup = new TotalSalesReportPopup(mainWindow, true);
+                var closeButton = popup.getCloseButton();
+
+                closeButton.addActionListener(e -> {
+                    popup.dispose();
+                });
+
+                popup.setVisible(true);
+
+            }
+        };
 
         salesReportLast30DaysMenuItem.addActionListener(showReportsPopup);
         noOfTicketsSoldMenuItem.addActionListener(showReportsPopup);
