@@ -14,6 +14,7 @@ import com.github.lgooddatepicker.components.DateTimePicker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -302,7 +303,7 @@ public class EventsWindowController {
             try {
                 price = priceText == null || priceText.isBlank()
                         ? BigDecimal.ZERO
-                        : new BigDecimal(priceText.trim());
+                        : new BigDecimal(priceText.trim()).setScale(2, RoundingMode.HALF_UP);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(
                         eventsWindow,//Parent component
@@ -431,7 +432,7 @@ public class EventsWindowController {
             try {
                 price = priceText == null || priceText.isBlank()
                         ? BigDecimal.ZERO
-                        : new BigDecimal(priceText.trim());
+                        : new BigDecimal(priceText.trim()).setScale(2, RoundingMode.HALF_UP);;
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(
                         eventsWindow,//Parent component

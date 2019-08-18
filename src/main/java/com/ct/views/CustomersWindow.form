@@ -125,13 +125,13 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="headerLabel">
       <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="Customers"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
           <FontInfo relative="true">
             <Font component="headerLabel" property="font" relativeSize="true" size="3"/>
           </FontInfo>
         </Property>
-        <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="Customers"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="scrollPane">
@@ -192,6 +192,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="ticketsTotalTextField">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="bookingDateLabel">
       <Properties>

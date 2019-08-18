@@ -13,7 +13,9 @@ import com.ct.views.CustomersWindow;
 import com.github.lgooddatepicker.components.DatePicker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,6 +38,10 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
 import static javax.swing.SwingWorker.StateValue.DONE;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
+import javax.swing.text.NumberFormatter;
 
 /**
  *
@@ -123,6 +129,31 @@ public class CustomersWindowController {
                 issuedCheckBox.setSelected(issued);
             }
 
+        });
+        var noOfTicketsDoc = noOfTicketsTextField.getDocument();
+
+        noOfTicketsDoc.addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                calculateTotalTicketCost();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                calculateTotalTicketCost();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                calculateTotalTicketCost();
+            }
+
+        });
+
+        eventsComboBox.addItemListener(itemEvent -> {
+            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
+                calculateTotalTicketCost();
+            }
         });
 
         //Create a swing worker named CustomersLoader
@@ -231,6 +262,41 @@ public class CustomersWindowController {
         bookingDatePicker.clear();
         paidCheckBox.setSelected(false);
         issuedCheckBox.setSelected(false);
+    }
+    /**
+     * Calculates the total ticket cost.
+     * 
+     * total ticket cost = (ticket cost) x (no. of tickets)
+     */
+    private void calculateTotalTicketCost() {
+        BigDecimal totalTicketCost = BigDecimal.ZERO;
+
+        if (selectedRow >= 0 && eventsComboBox.getSelectedItem() != null) {
+            var eventModel = (EventModel) eventsComboBox.getSelectedItem();
+
+            if (eventModel != null) {
+                var ticketPrice = eventModel.getTicketPrice();
+
+                String noOfTickets = noOfTicketsTextField.getText();
+
+                Integer numberOfTickets = null;
+
+                try {
+                    numberOfTickets = Integer.parseInt(noOfTickets);
+                } catch (NumberFormatException numberFormatException) {
+                }
+
+                if (numberOfTickets != null) {
+
+                    totalTicketCost = BigDecimal.valueOf(numberOfTickets).multiply(ticketPrice);
+                }
+
+            }
+        }
+
+        totalTicketCost = totalTicketCost.setScale(2, RoundingMode.HALF_UP);
+
+        ticketsTotalTextField.setText(totalTicketCost.toPlainString());
     }
 
     /**
@@ -352,7 +418,7 @@ public class CustomersWindowController {
             try {
                 ticketsCost = totalCost == null || totalCost.isBlank()
                               ? BigDecimal.ZERO
-                              : new BigDecimal(totalCost.trim());
+                              : new BigDecimal(totalCost.trim()).setScale(2, RoundingMode.HALF_UP);;
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(
                         customersWindow,//Parent component
@@ -500,7 +566,7 @@ public class CustomersWindowController {
             try {
                 ticketsCost = totalCost == null || totalCost.isBlank()
                               ? BigDecimal.ZERO
-                              : new BigDecimal(totalCost.trim());
+                              : new BigDecimal(totalCost.trim()).setScale(2, RoundingMode.HALF_UP);;
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(
                         customersWindow,//Parent component

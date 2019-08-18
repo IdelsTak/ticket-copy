@@ -131,6 +131,8 @@ public class CustomersWindow extends javax.swing.JPanel {
 
         ticketsTotalLabel.setText("Total Tickets Cost:");
 
+        ticketsTotalTextField.setEditable(false);
+
         bookingDateLabel.setText("Booking Date:");
 
         ticketsPaidOrIssuedLabel.setText("Ticket has been:");
