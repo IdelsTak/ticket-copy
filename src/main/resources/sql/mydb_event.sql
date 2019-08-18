@@ -41,6 +41,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
+INSERT INTO `event` VALUES ('event#2','Concert','ColdPlay Tour','The Big Hall','2019-08-30','04:00:00',45,'Come one come all'),('event#3','Concert','Some Concert','Here & There','2019-08-23','02:00:00',78,'loaoalal alalal'),('event#5','Concert','Holoo','Near','2019-08-29','01:30:00',78,'aaaaa'),('event#6','Theater','Jokauau','Korall','2019-08-17','02:00:00',75,'weasasas'),('event#7','Concert','Here & Far','Nearaaaa','2019-08-29','01:30:00',78,'aaaaa'),('event#8','Concert','Holooqq','Nearsss','2019-08-29','01:30:00',78,'aaaaa'),('event#9','Theater','Holooqq','Nearsss','2019-08-29','01:30:00',78,'aaaaa'),('good_vent','Theater','A Good Celebration','Kolkata','2019-08-18','00:14:00',23,'Some event Some event Some event Some event');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-17 22:28:18
+-- Dump completed on 2019-08-18 11:55:51
