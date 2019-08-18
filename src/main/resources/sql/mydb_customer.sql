@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `customer`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `customer` (
   `customer_id` int(11) NOT NULL AUTO_INCREMENT,
-  `event_id` varchar(45) NOT NULL,
+  `event_id` varchar(45) DEFAULT NULL,
   `customer_name` varchar(45) NOT NULL,
   `phone` int(11) NOT NULL,
   `number_of_tickets` int(11) NOT NULL,
@@ -34,8 +34,8 @@ CREATE TABLE `customer` (
   `booking_date` date NOT NULL,
   PRIMARY KEY (`customer_id`),
   KEY `fk_customer_event_idx` (`event_id`),
-  CONSTRAINT `fk_customer_event` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_customer_event` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`) ON DELETE SET NULL ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,6 +44,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+INSERT INTO `customer` VALUES (1,'event#3','John Doe',1234567566,4,852,1,0,'2019-08-16'),(2,NULL,'Jane Doe',9078888,2,5210,1,1,'2019-08-31');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-18 13:31:29
+-- Dump completed on 2019-08-18 16:26:48
