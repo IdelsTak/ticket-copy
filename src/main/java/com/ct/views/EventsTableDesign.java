@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.ct.models;
+package com.ct.views;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Hiram K.
  */
-public class EventsTableModel extends DefaultTableModel {
+public class EventsTableDesign extends DefaultTableModel {
 
     private static final long serialVersionUID = -6515825795700587750L;
     private static final String[] COLUMN_NAMES = {
@@ -23,7 +23,7 @@ public class EventsTableModel extends DefaultTableModel {
         "Ticket Price",
         "Remarks"};
 
-    public EventsTableModel() {
+    public EventsTableDesign() {
         for (String columnName : COLUMN_NAMES) {
             super.addColumn(columnName);
         }

@@ -8,7 +8,7 @@ package com.ct.controllers;
 import com.ct.database.Connection;
 import com.ct.models.CustomerModel;
 import com.ct.models.EventModel;
-import com.ct.models.EventsTableModel;
+import com.ct.views.EventsTableDesign;
 import com.ct.views.EventsWindow;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import java.awt.event.ActionEvent;
@@ -47,7 +47,7 @@ public class EventsWindowController {
     private static final Logger LOG = Logger.getLogger(EventsWindowController.class.getName());
     private final EventsWindow eventsWindow;
     private final JTable eventsTable;
-    private final EventsTableModel eventsTableModel;
+    private final EventsTableDesign eventsTableDesign;
     private int selectedRow = -1;
     private final Map<String, EventModel> eventsCache = new TreeMap<>();
     private final JTextField idTextField;
@@ -65,7 +65,7 @@ public class EventsWindowController {
         this.eventsWindow = new EventsWindow();
 
         this.eventsTable = eventsWindow.getEventsTable();
-        this.eventsTableModel = new EventsTableModel();
+        this.eventsTableDesign = new EventsTableDesign();
 
         this.idTextField = eventsWindow.getIdTextField();
         this.remarksTextArea = eventsWindow.getRemarksTextArea();
@@ -91,13 +91,13 @@ public class EventsWindowController {
             LOG.log(Level.INFO, "Selected row = [{0}]", selectedRow);
 
             if (selectedRow >= 0) {
-                String id = (String) eventsTableModel.getValueAt(selectedRow, 0);
-                String type = (String) eventsTableModel.getValueAt(selectedRow, 1);
-                String name = (String) eventsTableModel.getValueAt(selectedRow, 2);
-                String venue = (String) eventsTableModel.getValueAt(selectedRow, 3);
-                LocalDateTime dateTime = (LocalDateTime) eventsTableModel.getValueAt(selectedRow, 4);
-                BigDecimal price = (BigDecimal) eventsTableModel.getValueAt(selectedRow, 5);
-                String remarks = (String) eventsTableModel.getValueAt(selectedRow, 6);
+                String id = (String) eventsTableDesign.getValueAt(selectedRow, 0);
+                String type = (String) eventsTableDesign.getValueAt(selectedRow, 1);
+                String name = (String) eventsTableDesign.getValueAt(selectedRow, 2);
+                String venue = (String) eventsTableDesign.getValueAt(selectedRow, 3);
+                LocalDateTime dateTime = (LocalDateTime) eventsTableDesign.getValueAt(selectedRow, 4);
+                BigDecimal price = (BigDecimal) eventsTableDesign.getValueAt(selectedRow, 5);
+                String remarks = (String) eventsTableDesign.getValueAt(selectedRow, 6);
 
                 idTextField.setText(id);
                 typeComboBox.setSelectedItem(type);
@@ -122,7 +122,7 @@ public class EventsWindowController {
                     LOG.log(Level.INFO, "Events cache: [{0}]", eventsCache.values());
 
                     eventsCache.values().forEach(eventModel -> {
-                        eventsTableModel.addRow(new Object[]{
+                        eventsTableDesign.addRow(new Object[]{
                             eventModel.getEventId(),
                             eventModel.getEventType(),
                             eventModel.getEventName(),
@@ -133,7 +133,7 @@ public class EventsWindowController {
                         });
                     });
 
-                    eventsTable.setModel(eventsTableModel);
+                    eventsTable.setModel(eventsTableDesign);
                 } catch (InterruptedException
                          | ExecutionException ex) {
                     LOG.log(Level.SEVERE, null, ex);
@@ -346,7 +346,7 @@ public class EventsWindowController {
 
                                 LOG.log(Level.INFO, "Events cache: [{0}]", eventsCache.values());
 
-                                eventsTableModel.addRow(new Object[]{
+                                eventsTableDesign.addRow(new Object[]{
                                     id,
                                     type,
                                     name,
@@ -486,9 +486,9 @@ public class EventsWindowController {
 
                                 LOG.log(Level.INFO, "Events cache: [{0}]", eventsCache.values());
 
-                                eventsTableModel.removeRow(row);
+                                eventsTableDesign.removeRow(row);
 
-                                eventsTableModel.insertRow(row, new Object[]{
+                                eventsTableDesign.insertRow(row, new Object[]{
                                     id,
                                     type,
                                     name,
@@ -578,7 +578,7 @@ public class EventsWindowController {
 
                                 LOG.log(Level.INFO, "Events cache: [{0}]", eventsCache.values());
 
-                                eventsTableModel.removeRow(row);
+                                eventsTableDesign.removeRow(row);
 
                             } catch (InterruptedException
                                      | ExecutionException ex) {

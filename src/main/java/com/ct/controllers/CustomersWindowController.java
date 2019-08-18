@@ -7,7 +7,7 @@ package com.ct.controllers;
 
 import com.ct.database.Connection;
 import com.ct.models.CustomerModel;
-import com.ct.models.CustomerTableModel;
+import com.ct.views.CustomerTableDesign;
 import com.ct.models.EventModel;
 import com.ct.views.CustomersWindow;
 import com.github.lgooddatepicker.components.DatePicker;
@@ -45,7 +45,7 @@ public class CustomersWindowController {
 
     private static final Logger LOG = Logger.getLogger(CustomersWindowController.class.getName());
     private final CustomersWindow customersWindow;
-    private final CustomerTableModel customersTableModel;
+    private final CustomerTableDesign customersTableDesign;
     private final JTable customersTable;
     private final Map<Integer, CustomerModel> customersCache = new TreeMap<>();
     private final JButton addButton;
@@ -64,7 +64,7 @@ public class CustomersWindowController {
 
     public CustomersWindowController() {
         this.customersWindow = new CustomersWindow();
-        this.customersTableModel = new CustomerTableModel();
+        this.customersTableDesign = new CustomerTableDesign();
 
         this.customersTable = customersWindow.getCustomersTable();
         this.addButton = customersWindow.getAddButton();
@@ -80,7 +80,7 @@ public class CustomersWindowController {
         this.paidCheckBox = customersWindow.getPaidCheckBox();
         this.issuedCheckBox = customersWindow.getIssuedCheckBox();
 
-        customersTable.setModel(customersTableModel);
+        customersTable.setModel(customersTableDesign);
 
         ListSelectionModel selectionModel = customersTable.getSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -95,15 +95,15 @@ public class CustomersWindowController {
             LOG.log(Level.INFO, "Selected row = [{0}]", selectedRow);
 
             if (selectedRow >= 0) {
-                int id = (int) customersTableModel.getValueAt(selectedRow, 0);
-                String name = (String) customersTableModel.getValueAt(selectedRow, 1);
-                int phone = (int) customersTableModel.getValueAt(selectedRow, 2);
-                EventModel eventModel = (EventModel) customersTableModel.getValueAt(selectedRow, 3);
-                int noOfTickets = (int) customersTableModel.getValueAt(selectedRow, 4);
-                BigDecimal totalCost = (BigDecimal) customersTableModel.getValueAt(selectedRow, 5);
-                LocalDate bookingDate = (LocalDate) customersTableModel.getValueAt(selectedRow, 6);
-                boolean paid = (boolean) customersTableModel.getValueAt(selectedRow, 7);
-                boolean issued = (boolean) customersTableModel.getValueAt(selectedRow, 8);
+                int id = (int) customersTableDesign.getValueAt(selectedRow, 0);
+                String name = (String) customersTableDesign.getValueAt(selectedRow, 1);
+                int phone = (int) customersTableDesign.getValueAt(selectedRow, 2);
+                EventModel eventModel = (EventModel) customersTableDesign.getValueAt(selectedRow, 3);
+                int noOfTickets = (int) customersTableDesign.getValueAt(selectedRow, 4);
+                BigDecimal totalCost = (BigDecimal) customersTableDesign.getValueAt(selectedRow, 5);
+                LocalDate bookingDate = (LocalDate) customersTableDesign.getValueAt(selectedRow, 6);
+                boolean paid = (boolean) customersTableDesign.getValueAt(selectedRow, 7);
+                boolean issued = (boolean) customersTableDesign.getValueAt(selectedRow, 8);
 
                 idTextField.setText(Integer.toString(id));
                 nameTextField.setText(name);
@@ -128,7 +128,7 @@ public class CustomersWindowController {
                     result.forEach(customersCache::putIfAbsent);
 
                     customersCache.values().forEach(customer -> {
-                        customersTableModel.addRow(new Object[]{
+                        customersTableDesign.addRow(new Object[]{
                             customer.getId(),
                             customer.getName(),
                             customer.getPhone(),
@@ -371,7 +371,7 @@ public class CustomersWindowController {
                                     //Map will return null if it adds
                                     //the new customer model to the cache
                                     if (returnedModel == null) {
-                                        customersTableModel.addRow(new Object[]{
+                                        customersTableDesign.addRow(new Object[]{
                                             key,
                                             name,
                                             phoneNumber,
@@ -525,9 +525,9 @@ public class CustomersWindowController {
                                 Map<Integer, CustomerModel> result = eventsLoader.get();
                                 result.forEach(customersCache::putIfAbsent);
 
-                                customersTableModel.removeRow(row);
+                                customersTableDesign.removeRow(row);
 
-                                customersTableModel.insertRow(row, new Object[]{
+                                customersTableDesign.insertRow(row, new Object[]{
                                     id,
                                     name,
                                     phoneNumber,
@@ -601,7 +601,7 @@ public class CustomersWindowController {
                                 Map<Integer, CustomerModel> map = customersLoader.get();
                                 map.forEach(customersCache::putIfAbsent);
 
-                                customersTableModel.removeRow(row);
+                                customersTableDesign.removeRow(row);
 
                             } catch (InterruptedException
                                      | ExecutionException ex) {
