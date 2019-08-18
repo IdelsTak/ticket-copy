@@ -10,6 +10,8 @@ import com.ct.models.EventModel;
 import com.ct.models.EventsTableModel;
 import com.ct.views.EventsWindow;
 import com.github.lgooddatepicker.components.DateTimePicker;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -53,6 +55,7 @@ public class EventsWindowController {
     private final JTextField nameTextField;
     private final JComboBox<String> typeComboBox;
     private final JButton addButton;
+    private final JButton updateButton;
 
     public EventsWindowController() {
         this.eventsWindow = new EventsWindow();
@@ -68,6 +71,7 @@ public class EventsWindowController {
         this.nameTextField = eventsWindow.getNameTextField();
         this.typeComboBox = eventsWindow.getTypeComboBox();
         this.addButton = eventsWindow.getAddButton();
+        this.updateButton = eventsWindow.getUpdateButton();
 
         ListSelectionModel selectionModel = eventsTable.getSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -101,13 +105,13 @@ public class EventsWindowController {
 
         });
 
-        SwingWorker<Map<String, EventModel>, Void> worker = new SwingWorkerImpl();
+        SwingWorker<Map<String, EventModel>, Void> loader = new EventsLoader();
 
-        worker.addPropertyChangeListener(changeEvent -> {
+        loader.addPropertyChangeListener(changeEvent -> {
             if (changeEvent.getPropertyName().equals("state")
                     && changeEvent.getNewValue().equals(DONE)) {
                 try {
-                    Map<String, EventModel> result = worker.get();
+                    Map<String, EventModel> result = loader.get();
                     result.forEach(eventsCache::putIfAbsent);
 
                     LOG.log(Level.INFO, "Events cache: [{0}]", eventsCache.values());
@@ -132,113 +136,14 @@ public class EventsWindowController {
             }
         });
         //Start the background thread
-        worker.execute();
+        loader.execute();
 
         //Create an action for adding events to the database
         //and attach it to the addButton
-        addButton.addActionListener(actionEvent -> {
-            var id = idTextField.getText();
-            if (eventsCache.keySet().contains(id)) {
-                JOptionPane.showMessageDialog(
-                        eventsWindow,//Parent component
-                        MessageFormat.format("Id: {0} exists already. Please enter a new Id value.", id),//Message
-                        "Error",//title
-                        JOptionPane.ERROR_MESSAGE);//Message type
-                return;
-            }
-            var type = (String) typeComboBox.getSelectedItem();
-            var name = nameTextField.getText();
-            var venue = venueTextField.getText();
-            var dateTime = dateTimePicker.getDateTimePermissive();
-
-            if (dateTime == null) {
-                JOptionPane.showMessageDialog(
-                        eventsWindow,//Parent component
-                        "Please provide a valid date/time",//Message
-                        "Error",//title
-                        JOptionPane.ERROR_MESSAGE);//Message type
-                return;
-            }
-
-            var priceText = priceTextField.getText();
-
-            BigDecimal price;
-
-            try {
-                price = priceText == null || priceText.isBlank()
-                        ? BigDecimal.ZERO
-                        : new BigDecimal(priceText.trim());
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(
-                        eventsWindow,//Parent component
-                        "Please provide a valid price",//Message
-                        "Error",//title
-                        JOptionPane.ERROR_MESSAGE);//Message type
-                return;
-            }
-
-            var remarks = remarksTextArea.getText();
-
-            var connection = Connection.getConnection();
-
-            if (connection != null) {
-
-                String sql = "INSERT INTO event "
-                        + "(event_id, event_type, event_name, venue, event_date, event_time, ticket_price, remark) "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-                try (PreparedStatement ps = connection.prepareStatement(sql)) {
-
-                    ps.setString(1, id);
-                    ps.setString(2, type);
-                    ps.setString(3, name);
-                    ps.setString(4, venue);
-                    ps.setDate(5, Date.valueOf(dateTime.toLocalDate()));
-                    ps.setTime(6, Time.valueOf(dateTime.toLocalTime()));
-                    ps.setFloat(7, price.floatValue());
-                    ps.setString(8, remarks);
-
-                    int updatedRows = ps.executeUpdate();
-
-                    LOG.log(Level.INFO, "Updated rows = [{0}]", updatedRows);
-
-                    resetTableSelection();
-
-                    SwingWorker<Map<String, EventModel>, Void> swingWorker = new SwingWorkerImpl();
-
-                    swingWorker.addPropertyChangeListener(changeEvent -> {
-                        if (changeEvent.getPropertyName().equals("state")
-                                && changeEvent.getNewValue().equals(DONE)) {
-                            try {
-                                Map<String, EventModel> result = swingWorker.get();
-                                result.forEach(eventsCache::putIfAbsent);
-
-                                LOG.log(Level.INFO, "Events cache: [{0}]", eventsCache.values());
-
-                                eventsTableModel.addRow(new Object[]{
-                                    id,
-                                    type,
-                                    name,
-                                    venue,
-                                    dateTime,
-                                    price,
-                                    remarks
-                                });
-                            } catch (InterruptedException
-                                     | ExecutionException ex) {
-                                LOG.log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    });
-                    //Start the background thread
-                    swingWorker.execute();
-
-                } catch (SQLException ex) {
-                    LOG.log(Level.SEVERE, null, ex);
-                }
-            }
-
-        });
+        addButton.addActionListener(new AddToDatabase());
+        //Create an action for modifying events that are
+        //in the database and then attach it to the update button
+        updateButton.addActionListener(new UpdateEventInDatabase());
     }
 
     public EventsWindow getEventsWindow() {
@@ -256,7 +161,7 @@ public class EventsWindowController {
         remarksTextArea.setText(null);
     }
 
-    private static class SwingWorkerImpl extends SwingWorker<Map<String, EventModel>, Void> {
+    private static class EventsLoader extends SwingWorker<Map<String, EventModel>, Void> {
 
         @Override
         protected Map<String, EventModel> doInBackground() throws Exception {
@@ -293,8 +198,6 @@ public class EventsWindowController {
                                 BigDecimal.valueOf(price),
                                 remarks);
 
-                        LOG.log(Level.INFO, "Loaded event from database: [{0}]", eventModel);
-
                         cache.put(id, eventModel);
                     }
 
@@ -306,6 +209,291 @@ public class EventsWindowController {
             LOG.log(Level.INFO, "Nos. of events in db = [{0}]", cache.size());
 
             return cache;
+        }
+    }
+
+    private class AddToDatabase implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            var id = idTextField.getText();
+            if (eventsCache.keySet().contains(id)) {
+                JOptionPane.showMessageDialog(
+                        eventsWindow,//Parent component
+                        MessageFormat.format("Id: {0} exists already. Please enter a new Id value.", id),//Message
+                        "Error",//title
+                        JOptionPane.ERROR_MESSAGE);//Message type
+                return;
+            }
+            var type = (String) typeComboBox.getSelectedItem();
+
+            if (type == null) {
+                JOptionPane.showMessageDialog(
+                        eventsWindow,//Parent component
+                        "Please select an event type",//Message
+                        "Error",//title
+                        JOptionPane.ERROR_MESSAGE);//Message type
+                return;
+            }
+
+            var name = nameTextField.getText();
+
+            if (name == null || name.isBlank()) {
+                JOptionPane.showMessageDialog(
+                        eventsWindow,//Parent component
+                        "Please enter the event's name",//Message
+                        "Error",//title
+                        JOptionPane.ERROR_MESSAGE);//Message type
+                return;
+            }
+
+            var venue = venueTextField.getText();
+            var dateTime = dateTimePicker.getDateTimePermissive();
+            var priceText = priceTextField.getText();
+
+            BigDecimal price;
+
+            try {
+                price = priceText == null || priceText.isBlank()
+                        ? BigDecimal.ZERO
+                        : new BigDecimal(priceText.trim());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(
+                        eventsWindow,//Parent component
+                        "Please provide a valid price",//Message
+                        "Error",//title
+                        JOptionPane.ERROR_MESSAGE);//Message type
+                return;
+            }
+
+            if (price.equals(BigDecimal.ZERO)) {
+                JOptionPane.showMessageDialog(
+                        eventsWindow,//Parent component
+                        "Please enter the ticket price",//Message
+                        "Error",//title
+                        JOptionPane.ERROR_MESSAGE);//Message type
+                return;
+            }
+
+            var remarks = remarksTextArea.getText();
+
+            if (remarks == null || remarks.isBlank()) {
+                JOptionPane.showMessageDialog(
+                        eventsWindow,//Parent component
+                        "Please enter the remarks",//Message
+                        "Error",//title
+                        JOptionPane.ERROR_MESSAGE);//Message type
+                return;
+            }
+
+            var connection = Connection.getConnection();
+
+            if (connection != null) {
+
+                String sql = "INSERT INTO event "
+                        + "(event_id, event_type, event_name, venue, event_date, event_time, ticket_price, remark) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+                try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+                    ps.setString(1, id);
+                    ps.setString(2, type);
+                    ps.setString(3, name);
+                    ps.setString(4, venue);
+                    ps.setDate(5, Date.valueOf(dateTime.toLocalDate()));
+                    ps.setTime(6, Time.valueOf(dateTime.toLocalTime()));
+                    ps.setFloat(7, price.floatValue());
+                    ps.setString(8, remarks);
+
+                    int addedRows = ps.executeUpdate();
+
+                    LOG.log(Level.INFO, "Added rows = [{0}]", addedRows);
+
+                    resetTableSelection();
+
+                    SwingWorker<Map<String, EventModel>, Void> eventsLoader = new EventsLoader();
+
+                    eventsLoader.addPropertyChangeListener(changeEvent -> {
+                        if (changeEvent.getPropertyName().equals("state")
+                                && changeEvent.getNewValue().equals(DONE)) {
+                            try {
+                                Map<String, EventModel> result = eventsLoader.get();
+                                result.forEach(eventsCache::putIfAbsent);
+
+                                LOG.log(Level.INFO, "Events cache: [{0}]", eventsCache.values());
+
+                                eventsTableModel.addRow(new Object[]{
+                                    id,
+                                    type,
+                                    name,
+                                    venue,
+                                    dateTime,
+                                    price,
+                                    remarks
+                                });
+
+                            } catch (InterruptedException
+                                     | ExecutionException ex) {
+                                LOG.log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    });
+                    //Start the background thread
+                    eventsLoader.execute();
+
+                } catch (SQLException ex) {
+                    LOG.log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    private class UpdateEventInDatabase implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            var id = idTextField.getText();
+//            if (eventsCache.keySet().contains(id)) {
+//                JOptionPane.showMessageDialog(
+//                        eventsWindow,//Parent component
+//                        MessageFormat.format("Id: {0} exists already. Please enter a new Id value.", id),//Message
+//                        "Error",//title
+//                        JOptionPane.ERROR_MESSAGE);//Message type
+//                return;
+//            }
+            var type = (String) typeComboBox.getSelectedItem();
+
+            if (type == null) {
+                JOptionPane.showMessageDialog(
+                        eventsWindow,//Parent component
+                        "Please select an event type",//Message
+                        "Error",//title
+                        JOptionPane.ERROR_MESSAGE);//Message type
+                return;
+            }
+
+            var name = nameTextField.getText();
+
+            if (name == null || name.isBlank()) {
+                JOptionPane.showMessageDialog(
+                        eventsWindow,//Parent component
+                        "Please enter the event's name",//Message
+                        "Error",//title
+                        JOptionPane.ERROR_MESSAGE);//Message type
+                return;
+            }
+
+            var venue = venueTextField.getText();
+            var dateTime = dateTimePicker.getDateTimePermissive();
+            var priceText = priceTextField.getText();
+
+            BigDecimal price;
+
+            try {
+                price = priceText == null || priceText.isBlank()
+                        ? BigDecimal.ZERO
+                        : new BigDecimal(priceText.trim());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(
+                        eventsWindow,//Parent component
+                        "Please provide a valid price",//Message
+                        "Error",//title
+                        JOptionPane.ERROR_MESSAGE);//Message type
+                return;
+            }
+
+            if (price.equals(BigDecimal.ZERO)) {
+                JOptionPane.showMessageDialog(
+                        eventsWindow,//Parent component
+                        "Please enter the ticket price",//Message
+                        "Error",//title
+                        JOptionPane.ERROR_MESSAGE);//Message type
+                return;
+            }
+
+            var remarks = remarksTextArea.getText();
+
+            if (remarks == null || remarks.isBlank()) {
+                JOptionPane.showMessageDialog(
+                        eventsWindow,//Parent component
+                        "Please enter the remarks",//Message
+                        "Error",//title
+                        JOptionPane.ERROR_MESSAGE);//Message type
+                return;
+            }
+
+            var connection = Connection.getConnection();
+
+            if (connection != null) {
+                String sql = "UPDATE event "
+                        + "SET event_type = ?, "
+                        + "event_name = ?, "
+                        + "venue = ?, "
+                        + "event_date = ?, "
+                        + "event_time = ?, "
+                        + "ticket_price = ?, "
+                        + "remark = ? "
+                        + "WHERE event_id = ?";
+
+                try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+                    ps.setString(1, type);
+                    ps.setString(2, name);
+                    ps.setString(3, venue);
+                    ps.setDate(4, dateTime != null
+                                  ? Date.valueOf(dateTime.toLocalDate())
+                                  : null);
+                    ps.setTime(5, dateTime != null
+                                  ? Time.valueOf(dateTime.toLocalTime())
+                                  : null);
+                    ps.setFloat(6, price.floatValue());
+                    ps.setString(7, remarks);
+                    ps.setString(8, id);
+                    
+                    int updatedRows = ps.executeUpdate();
+                    
+                    LOG.log(Level.INFO, "Updated rows = [{0}]", updatedRows);
+                    
+                    final int row = selectedRow;
+                    
+                    resetTableSelection();
+                    
+                    SwingWorker<Map<String, EventModel>, Void> eventsLoader = new EventsLoader();
+
+                    eventsLoader.addPropertyChangeListener(changeEvent -> {
+                        if (changeEvent.getPropertyName().equals("state")
+                                && changeEvent.getNewValue().equals(DONE)) {
+                            try {
+                                Map<String, EventModel> result = eventsLoader.get();
+                                result.forEach(eventsCache::putIfAbsent);
+
+                                LOG.log(Level.INFO, "Events cache: [{0}]", eventsCache.values());
+                                
+                                eventsTableModel.removeRow(row);
+
+                                eventsTableModel.insertRow(row, new Object[]{
+                                    id,
+                                    type,
+                                    name,
+                                    venue,
+                                    dateTime,
+                                    price,
+                                    remarks
+                                });
+
+                            } catch (InterruptedException
+                                     | ExecutionException ex) {
+                                LOG.log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    });
+                    //Start the background thread
+                    eventsLoader.execute();
+
+                } catch (SQLException ex) {
+                    LOG.log(Level.SEVERE, null, ex);
+                }
+            }
         }
     }
 
