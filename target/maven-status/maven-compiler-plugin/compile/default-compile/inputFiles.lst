@@ -1,10 +1,11 @@
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/views/CustomersWindow.java
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/views/EventsWindow.java
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/views/CustomerTableDesign.java
+/home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/views/LoginWindow.java
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/views/TotalSalesReportPopup.java
-/home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/views/Login.java
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/views/TicketsSoldReportPopup.java
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/controllers/MainWindowController.java
+/home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/views/RoundedDecimal.java
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/models/EventModel.java
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/controllers/EventsWindowController.java
 /home/hiram/GitHub/upwork-jobs/CT/aperera/ticket-copy/src/main/java/com/ct/models/CustomerModel.java
