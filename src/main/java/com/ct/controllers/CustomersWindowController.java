@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2019, Hiram K.
- * All rights reserved.
- *
- */
 package com.ct.controllers;
 
 import com.ct.database.Connection;
@@ -41,30 +36,123 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
+ * A controller class that manages the interactions between the view,
+ * <code>{@link CustomersWindow}</code>, and the model,
+ * <code>{@link CustomerModel}</code>.
  *
  * @author admin
  */
 public class CustomersWindowController {
 
+    /**
+     * The class's logger.
+     */
     private static final Logger LOG = Logger.getLogger(CustomersWindowController.class.getName());
+    /**
+     * The view object.
+     */
     private final CustomersWindow customersWindow;
+    /**
+     * This is the <code>{@link DefaultTableModel}</code> of a table containing
+     * <code>{@link CustomerModel}</code> properties.
+     *
+     * @see CustomerTableDesign
+     */
     private final CustomerTableDesign customersTableDesign;
+    /**
+     * A <code>{@link JTable}</code> retrieved from the
+     * <code>{@link CustomersWindow}</code> that displays details of
+     * <code>{@link CustomerModel}</code>s.
+     */
     private final JTable customersTable;
+    /**
+     * A local cache of the available customers' details as provided by the
+     * <code>{@link CustomerModel}</code>s.
+     */
     private final Map<Integer, CustomerModel> customersCache = new TreeMap<>();
+    /**
+     * A <code>{@link JButton}</code> retrieved from the
+     * <code>{@link CustomersWindow}</code> that is used to add a selected
+     * <code>{@link CustomerModel}</code> to database.
+     */
     private final JButton addButton;
+    /**
+     * A <code>{@link JButton}</code> retrieved from the
+     * <code>{@link CustomersWindow}</code> that is used to add a update the
+     * details of a selected <code>{@link CustomerModel}</code> in database.
+     */
     private final JButton updateButton;
+    /**
+     * A <code>{@link JButton}</code> retrieved from the
+     * <code>{@link CustomersWindow}</code> that is used to delete a selected
+     * <code>{@link CustomerModel}</code> from database.
+     */
     private final JButton deleteButton;
+    /**
+     * A <code>{@link JTextField}</code> retrieved from the
+     * <code>{@link CustomersWindow}</code> that displays the id property of a
+     * selected <code>{@link CustomerModel}</code>.
+     */
     private final JTextField idTextField;
+    /**
+     * A <code>{@link JTextField}</code> retrieved from the
+     * <code>{@link CustomersWindow}</code> that displays the name property of a
+     * selected <code>{@link CustomerModel}</code>.
+     */
     private final JTextField nameTextField;
+    /**
+     * A <code>{@link JTextField}</code> retrieved from the
+     * <code>{@link CustomersWindow}</code> that displays the phone property of
+     * a selected <code>{@link CustomerModel}</code>.
+     */
     private final JTextField phoneTextField;
+    /**
+     * A <code>{@link JComboBox}</code> retrieved from the
+     * <code>{@link CustomersWindow}</code> that displays the event property
+     * of a selected <code>{@link CustomerModel}</code>.
+     */
     private final JComboBox<EventModel> eventsComboBox;
+    /**
+     * A <code>{@link JTextField}</code> retrieved from the
+     * <code>{@link CustomersWindow}</code> that displays the number of tickets
+     * bought property of a selected <code>{@link CustomerModel}</code>.
+     */
     private final JTextField noOfTicketsTextField;
+    /**
+     * A <code>{@link JTextField}</code> retrieved from the
+     * <code>{@link CustomersWindow}</code> that displays the total cost of
+     * tickets bought property of a selected <code>{@link CustomerModel}</code>.
+     */
     private final JTextField ticketsTotalTextField;
+    /**
+     * A <code>{@link DatePicker}</code> retrieved from the
+     * <code>{@link CustomersWindow}</code> that displays the date property of a
+     * selected <code>{@link CustomerModel}</code>.
+     */
     private final DatePicker bookingDatePicker;
+    /**
+     * A <code>{@link JCheckBox}</code> retrieved from the
+     * <code>{@link CustomersWindow}</code> that displays the ticket paid
+     * property of a selected <code>{@link CustomerModel}</code>.
+     */
     private final JCheckBox paidCheckBox;
+    /**
+     * A <code>{@link JCheckBox}</code> retrieved from the
+     * <code>{@link CustomersWindow}</code> that displays the ticket issued
+     * property of a selected <code>{@link CustomerModel}</code>.
+     */
     private final JCheckBox issuedCheckBox;
+    /**
+     * The index of the row selected in the
+     * <code>{@link #customersTable}</code>.
+     */
     private int selectedRow = -1;
 
+    /**
+     * Default constructor for the
+     * <code>{@link CustomersWindowController}</code>
+     * class.
+     */
     public CustomersWindowController() {
         //Create the customers window
         this.customersWindow = new CustomersWindow();
@@ -208,6 +296,11 @@ public class CustomersWindowController {
         deleteButton.addActionListener(new DeleteCustomerFromDatabase());
     }
 
+    /**
+     * Retrieves the view object that this controller manages.
+     *
+     * @return the view object that this controller manages.
+     */
     public CustomersWindow getCustomersWindow() {
         return customersWindow;
     }
@@ -368,6 +461,10 @@ public class CustomersWindowController {
         }
     }
 
+    /**
+     * Adds the details of selected <code>{@link CustomerModel}</code> as a new
+     * database row.
+     */
     private class AddCustomerToDatabase implements ActionListener {
 
         @Override
@@ -476,7 +573,8 @@ public class CustomersWindowController {
                                 && event.getNewValue().equals(DONE)) {
                             try {
                                 Map<Integer, CustomerModel> result = loader.get();
-                                result.forEach((Integer key, CustomerModel value)
+                                result.forEach((Integer key,
+                                                CustomerModel value)
                                         -> {
                                     CustomerModel returnedModel = customersCache.putIfAbsent(key, value);
                                     //Map will return null if it adds
@@ -515,6 +613,10 @@ public class CustomersWindowController {
         }
     }
 
+    /**
+     * Updates the details of selected <code>{@link CustomerModel}</code> in an
+     * existing database row.
+     */
     private class UpdateCustomerInDatabase implements ActionListener {
 
         @Override
@@ -671,6 +773,10 @@ public class CustomersWindowController {
         }
     }
 
+    /**
+     * Deletes the details of selected <code>{@link CustomerModel}</code> from
+     * database.
+     */
     private class DeleteCustomerFromDatabase implements ActionListener {
 
         @Override
