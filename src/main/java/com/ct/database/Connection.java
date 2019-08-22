@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  * This is a utility class that enables its calling clients to get an instance
  * of a database connection. It functions by first loading the properties from
  * an external file (using the <code>loadProperties</code> method of class
- * <code>{@link Configs}</code>. After that, it can then create a database
+ * <code>{@link Configs}</code>). After that, it can then create a database
  * connection using the <code>{@link DriverManager}</code>.
  * <p>
  * This class keeps a static instance of the created connection throughout the
