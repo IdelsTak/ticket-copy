@@ -1,5 +1,6 @@
 package com.ct.models;
 
+import java.beans.Beans;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 

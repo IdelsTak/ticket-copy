@@ -1,6 +1,7 @@
 package com.ct.views;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 
 /**
  * A <code>{@link JDialog}</code> containing the report details for the total
@@ -10,7 +11,7 @@ import javax.swing.JButton;
  *
  * @author admin
  */
-public class TotalSalesReportPopup extends javax.swing.JDialog {
+public class TotalSalesReportPopup extends JDialog {
 
     private static final long serialVersionUID = -649165273924635151L;
 

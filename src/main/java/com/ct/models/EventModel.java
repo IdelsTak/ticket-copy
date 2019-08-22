@@ -3,6 +3,7 @@ package com.ct.models;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.beans.Beans;
 
 /**
  * This is essentially a Java <code>{@link Beans}</code> class that represents
