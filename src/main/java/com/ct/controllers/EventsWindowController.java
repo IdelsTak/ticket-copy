@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2019, Hiram K.
- * All rights reserved.
- *
- */
 package com.ct.controllers;
 
 import com.ct.database.Connection;
@@ -40,28 +35,109 @@ import javax.swing.SwingWorker;
 import static javax.swing.SwingWorker.StateValue.DONE;
 
 /**
+ * A controller class that manages the interactions between the view,
+ * <code>{@link EventsWindow}</code>, and the model,
+ * <code>{@link EventModel}</code>.
  *
  * @author admin
  */
 public class EventsWindowController {
 
+    /**
+     * The class's logger.
+     */
     private static final Logger LOG = Logger.getLogger(EventsWindowController.class.getName());
+    /**
+     * The view object.
+     */
     private final EventsWindow eventsWindow;
+    /**
+     * A <code>{@link JTable}</code> retrieved from the
+     * <code>{@link EventsWindow}</code> that displays details of
+     * <code>{@link EventModel}</code>s.
+     */
     private final JTable eventsTable;
+    /**
+     * This is the <code>{@link DefaultTableModel}</code> of a table containing
+     * <code>{@link EventModel}</code> properties.
+     *
+     * @see EventsTableDesign
+     */
     private final EventsTableDesign eventsTableDesign;
+    /**
+     * The index of the row selected in the <code>{@link #eventsTable}</code>.
+     */
     private int selectedRow = -1;
+    /**
+     * A local cache of the available event details as provided by the
+     * <code>{@link EventModel}</code>s.
+     */
     private final Map<String, EventModel> eventsCache = new TreeMap<>();
+    /**
+     * A <code>{@link JTextField}</code> retrieved from the
+     * <code>{@link EventsWindow}</code> that displays the id property of a
+     * selected <code>{@link EventModel}</code>.
+     */
     private final JTextField idTextField;
+    /**
+     * A <code>{@link JTextField}</code> retrieved from the
+     * <code>{@link EventsWindow}</code> that displays the remark property of a
+     * selected <code>{@link EventModel}</code>.
+     */
     private final JTextArea remarksTextArea;
+    /**
+     * A <code>{@link JTextField}</code> retrieved from the
+     * <code>{@link EventsWindow}</code> that displays the ticket price property
+     * of a selected <code>{@link EventModel}</code>.
+     */
     private final JTextField priceTextField;
+    /**
+     * A <code>{@link DateTimePicker}</code> retrieved from the
+     * <code>{@link EventsWindow}</code> that displays the date and time
+     * property of a selected <code>{@link EventModel}</code>.
+     */
     private final DateTimePicker dateTimePicker;
+    /**
+     * A <code>{@link JTextField}</code> retrieved from the
+     * <code>{@link EventsWindow}</code> that displays the venue property of a
+     * selected <code>{@link EventModel}</code>.
+     */
     private final JTextField venueTextField;
+    /**
+     * A <code>{@link JTextField}</code> retrieved from the
+     * <code>{@link EventsWindow}</code> that displays the name property of a
+     * selected <code>{@link EventModel}</code>.
+     */
     private final JTextField nameTextField;
+    /**
+     * A <code>{@link JComboBox}</code> retrieved from the
+     * <code>{@link EventsWindow}</code> that displays the event type property
+     * of a selected <code>{@link EventModel}</code>.
+     */
     private final JComboBox<String> typeComboBox;
+    /**
+     * A <code>{@link JButton}</code> retrieved from the
+     * <code>{@link EventsWindow}</code> that is used to add a selected
+     * <code>{@link EventModel}</code> to database.
+     */
     private final JButton addButton;
+    /**
+     * A <code>{@link JButton}</code> retrieved from the
+     * <code>{@link EventsWindow}</code> that is used to add a update the
+     * details of a selected <code>{@link EventModel}</code> in database.
+     */
     private final JButton updateButton;
+    /**
+     * A <code>{@link JButton}</code> retrieved from the
+     * <code>{@link EventsWindow}</code> that is used to delete a selected
+     * <code>{@link EventModel}</code> from database.
+     */
     private final JButton deleteButton;
 
+    /**
+     * Default constructor for the <code>{@link EventsWindowController}</code>
+     * class.
+     */
     public EventsWindowController() {
         //Create the events window to display
         //events data
@@ -188,6 +264,11 @@ public class EventsWindowController {
         return Collections.emptyList();
     }
 
+    /**
+     * Retrieves the view object that this controller manages.
+     *
+     * @return the view object that this controller manages.
+     */
     public EventsWindow getEventsWindow() {
         return eventsWindow;
     }
@@ -259,6 +340,10 @@ public class EventsWindowController {
         }
     }
 
+    /**
+     * Adds the details of selected <code>{@link EventModel}</code> as a new
+     * database row.
+     */
     private class AddEventToDatabase implements ActionListener {
 
         @Override
@@ -397,6 +482,10 @@ public class EventsWindowController {
         }
     }
 
+    /**
+     * Updates the details of selected <code>{@link EventModel}</code> in an
+     * existing database row.
+     */
     private class UpdateEventInDatabase implements ActionListener {
 
         @Override
@@ -512,7 +601,7 @@ public class EventsWindowController {
                                 result.forEach(eventsCache::putIfAbsent);
 
                                 LOG.log(Level.INFO, "Events cache: [{0}]", eventsCache.values());
-                                
+
                                 //Only remove/insert a row if there
                                 //was a selected row to start with
                                 if (row >= 0) {
@@ -545,6 +634,10 @@ public class EventsWindowController {
         }
     }
 
+    /**
+     * Deletes the details of selected <code>{@link EventModel}</code> from
+     * database.
+     */
     private class DeleteEventFromDatabase implements ActionListener {
 
         @Override
