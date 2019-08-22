@@ -7,7 +7,7 @@ package com.ct.controllers;
 
 import com.ct.database.Connection;
 import com.ct.models.LoginModel;
-import com.ct.views.Login;
+import com.ct.views.LoginWindow;
 import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
@@ -32,7 +32,7 @@ import static javax.swing.SwingWorker.StateValue.DONE;
 public class LoginController {
 
     private static final Logger LOG = Logger.getLogger(LoginController.class.getName());
-    private final Login login;
+    private final LoginWindow login;
     private final Map<Integer, LoginModel> usersCache = new TreeMap<>();
     private final JTextField usernameTextField;
     private final JPasswordField passwordField;
@@ -41,7 +41,7 @@ public class LoginController {
 
     public LoginController() {
         //Create the login form
-        this.login = new Login();
+        this.login = new LoginWindow();
         //Create a swingworker, which will pull data
         //from the database in a background thread
         var loader = new UserLoaders();

@@ -1,44 +1,80 @@
-/*
- * Copyright (c) 2019, Hiram K.
- * All rights reserved.
- *
- */
 package com.ct.views;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
+ * A <code>{@link JFrame}</code> containing the UI elements for signing in to
+ * the application.
+ *
+ * @see JFrame
  *
  * @author admin
  */
-public class Login extends javax.swing.JFrame {
+public class LoginWindow extends JFrame {
 
+    /**
+     * The serialVersionUID used for serialization.
+     *
+     * @see Serializable
+     */
     private static final long serialVersionUID = 9153252296083194807L;
 
     /** Creates new form LoginWindow */
-    public Login() {
+    public LoginWindow() {
         initComponents();
     }
 
+    /**
+     * Retrieves the <code>{@link JButton}</code> for cancelling the sign in.
+     *
+     * @return the <code>{@link JButton}</code> for cancelling the sign in.
+     */
     public JButton getCancelButton() {
         return cancelButton;
     }
 
+    /**
+     * Retrieves the <code>{@link JButton}</code> for signing in.
+     *
+     * @return the <code>{@link JButton}</code> for signing in.
+     */
     public JButton getLoginButton() {
         return loginButton;
     }
 
+    /**
+     * Retrieves the <code>{@link JPasswordField}</code> displaying the sign in
+     * password.
+     *
+     * @return the <code>{@link JPasswordField}</code> displaying the sign in
+     *         password.
+     */
     public JPasswordField getPasswordField() {
         return passwordField;
     }
 
+    /**
+     * Retrieves the <code>{@link JLabel}</code> for displaying sign in
+     * statuses.
+     *
+     * @return the <code>{@link JLabel}</code> for displaying sign in
+     *         statuses.
+     */
     public JLabel getStatusLabel() {
         return statusLabel;
     }
 
+    /**
+     * Retrieves the <code>{@link JTextField}</code> displaying the sign in
+     * username.
+     *
+     * @return the <code>{@link JTextField}</code> displaying the sign in
+     *         username.
+     */
     public JTextField getUsernameTextField() {
         return usernameTextField;
     }
