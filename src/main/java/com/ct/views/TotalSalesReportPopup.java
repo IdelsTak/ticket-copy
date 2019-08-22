@@ -1,13 +1,12 @@
-/*
- * Copyright (c) 2019, Hiram K.
- * All rights reserved.
- *
- */
 package com.ct.views;
 
 import javax.swing.JButton;
 
 /**
+ * A <code>{@link JDialog}</code> containing the report details for the total
+ * number of ticket sales.
+ *
+ * @see JDialog
  *
  * @author admin
  */
@@ -15,16 +14,21 @@ public class TotalSalesReportPopup extends javax.swing.JDialog {
 
     private static final long serialVersionUID = -649165273924635151L;
 
-    /** Creates new form ReportsPopup
+    /** Creates new form <code>{@link TotalSalesReportPopup}</code>.
      *
-     * @param parent
-     * @param modal 
+     * @param parent the parent window.
+     * @param modal  whether the dialog is modal or not.
      */
     public TotalSalesReportPopup(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
 
+    /**
+     * Retrieves the <code>{@link JButton}</code> for closing the popup.
+     *
+     * @return the <code>{@link JButton}</code> for closing the popup.
+     */
     public JButton getCloseButton() {
         return closeButton;
     }

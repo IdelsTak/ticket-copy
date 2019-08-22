@@ -7,7 +7,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 /**
- * A <code>{@link JFrame}</code> containing the UI elements for application.
+ * A <code>{@link JFrame}</code> containing the main UI elements for the
+ * application.
  *
  * @see JFrame
  *
