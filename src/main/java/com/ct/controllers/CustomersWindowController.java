@@ -42,7 +42,7 @@ import javax.swing.event.DocumentListener;
 
 /**
  *
- * @author Hiram K.
+ * @author admin
  */
 public class CustomersWindowController {
 

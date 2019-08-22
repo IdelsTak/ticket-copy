@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author Hiram K.
+ * @author admin
  */
 public class EventsWindow extends javax.swing.JPanel {
 

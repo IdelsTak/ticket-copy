@@ -9,7 +9,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Hiram K.
+ * @author admin
  */
 public class CustomerTableDesign extends DefaultTableModel {
 

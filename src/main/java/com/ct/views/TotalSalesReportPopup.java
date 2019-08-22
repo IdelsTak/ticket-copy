@@ -9,7 +9,7 @@ import javax.swing.JButton;
 
 /**
  *
- * @author Hiram K.
+ * @author admin
  */
 public class TotalSalesReportPopup extends javax.swing.JDialog {
 

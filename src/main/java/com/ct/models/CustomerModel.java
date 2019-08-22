@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 /**
  *
- * @author Hiram K.
+ * @author admin
  */
 public class CustomerModel {
 

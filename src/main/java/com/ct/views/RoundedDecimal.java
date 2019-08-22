@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  *
- * @author Hiram K.
+ * @author admin
  */
 public class RoundedDecimal {
 

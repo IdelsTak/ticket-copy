@@ -41,7 +41,7 @@ import static javax.swing.SwingWorker.StateValue.DONE;
 
 /**
  *
- * @author Hiram K.
+ * @author admin
  */
 public class EventsWindowController {
 

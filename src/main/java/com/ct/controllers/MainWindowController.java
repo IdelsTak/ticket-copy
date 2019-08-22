@@ -17,7 +17,7 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author Hiram K.
+ * @author admin
  */
 public class MainWindowController {
 
