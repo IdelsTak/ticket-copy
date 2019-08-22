@@ -5,19 +5,30 @@
  */
 package com.ct.views;
 
+import com.ct.models.EventModel;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
+ * A <code>{@link JPanel}</code> containing the UI elements for showing and
+ * editing the properties of <code>{@link EventModel}</code>.
+ *
+ * @see JPanel
  *
  * @author admin
  */
-public class EventsWindow extends javax.swing.JPanel {
+public class EventsWindow extends JPanel {
 
+    /**
+     * The serialVersionUID used for serialization.
+     *
+     * @see Serializable
+     */
     private static final long serialVersionUID = 6107985026803654276L;
 
     /** Creates new form EventWindow. */
@@ -25,46 +36,118 @@ public class EventsWindow extends javax.swing.JPanel {
         initComponents();
     }
 
+    /**
+     * Retrieves the <code>{@link JTable}</code> containing the events' details.
+     *
+     * @return the <code>{@link JTable}</code> containing the events' details.
+     */
     public JTable getEventsTable() {
         return eventsTable;
     }
 
+    /**
+     * Retrieves the <code>{@link JButton}</code> for adding events to database.
+     *
+     * @return the <code>{@link JButton}</code> for adding events to database.
+     */
     public JButton getAddButton() {
         return addButton;
     }
 
+    /**
+     * Retrieves the <code>{@link DateTimePicker}</code> that sets the events
+     * date and time.
+     *
+     * @return the <code>{@link DateTimePicker}</code> that sets the events date
+     *         and time.
+     */
     public DateTimePicker getDateTimePicker() {
         return dateTimePicker;
     }
 
+    /**
+     * Retrieves the <code>{@link JButton}</code> for deleting events from
+     * database.
+     *
+     * @return the <code>{@link JButton}</code> for deleting events from
+     *         database.
+     */
     public JButton getDeleteButton() {
         return deleteButton;
     }
 
+    /**
+     * Retrieves the <code>{@link JTextField}</code> displaying the event's id
+     * property.
+     *
+     * @return the <code>{@link JTextField}</code> displaying the event's id
+     *         property.
+     */
     public JTextField getIdTextField() {
         return idTextField;
     }
 
+    /**
+     * Retrieves the <code>{@link JTextField}</code> displaying the event's name
+     * property.
+     *
+     * @return the <code>{@link JTextField}</code> displaying the event's name
+     *         property.
+     */
     public JTextField getNameTextField() {
         return nameTextField;
     }
 
+    /**
+     * Retrieves the <code>{@link JTextField}</code> displaying the event's
+     * price property.
+     *
+     * @return the <code>{@link JTextField}</code> displaying the event's price
+     *         property.
+     */
     public JTextField getPriceTextField() {
         return priceTextField;
     }
 
+    /**
+     * Retrieves the <code>{@link JTextArea}</code> displaying the event's
+     * remarks.
+     *
+     * @return the <code>{@link JTextArea}</code> displaying the event's
+     *         remarks.
+     */
     public JTextArea getRemarksTextArea() {
         return remarksTextArea;
     }
 
+    /**
+     * Retrieves the <code>{@link JComboBox}</code> that chooses the event's
+     * type.
+     *
+     * @return the <code>{@link JComboBox}</code> that chooses the event's type.
+     */
     public JComboBox<String> getTypeComboBox() {
         return typeComboBox;
     }
 
+    /**
+     * Retrieves the <code>{@link JButton}</code> used for updating events'
+     * details in database.
+     *
+     * @return the <code>{@link JButton}</code> used for updating events'
+     *         details in database.
+     */
     public JButton getUpdateButton() {
         return updateButton;
     }
 
+    /**
+     * Retrieves the <code>{@link JTextField}</code> displaying the event's
+     * venue property.
+     *
+     * @return the <code>{@link JTextField}</code> displaying the event's venue
+     *         property.
+     */
     public JTextField getVenueTextField() {
         return venueTextField;
     }
