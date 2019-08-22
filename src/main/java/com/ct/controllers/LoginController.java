@@ -44,10 +44,10 @@ public class LoginController {
         this.login = new Login();
         //Create a swingworker, which will pull data
         //from the database in a background thread
-        SwingWorker<Map<Integer, LoginModel>, Void> worker = new SwingWorkerImpl();
+        var loader = new UserLoaders();
         //Listen to whether the worker has finished
         //loading the data from database
-        worker.addPropertyChangeListener(changeEvent -> {
+        loader.addPropertyChangeListener(changeEvent -> {
             //If the worker has finished loading
             //the cache with the usernames and passwords
             //insert the values in a local cache
@@ -57,7 +57,7 @@ public class LoginController {
                 //were loaded by the worker in a
                 //background thread
                 try {
-                    Map<Integer, LoginModel> map = worker.get();
+                    Map<Integer, LoginModel> map = loader.get();
                     //Use Java's member referencing to
                     //put all the values loaded by the
                     //worker in a background thread in the
@@ -70,7 +70,7 @@ public class LoginController {
             }
         });
         //Start running the worker in a background thread
-        worker.execute();
+        loader.execute();
 
         //Get the username and password fields from
         //the login form
@@ -118,10 +118,9 @@ public class LoginController {
      */
     public void displayLogin() {
         //Show the login form on the EDT
-        EventQueue.invokeLater(() -> {
-            login.setVisible(true);
-        });
+        EventQueue.invokeLater(() -> login.setVisible(true));
     }
+    private char[] storedPassword = null;
 
     /**
      * Checks whether the username and password provided are correct.
@@ -140,22 +139,26 @@ public class LoginController {
         } else {
             //Start checking whether the password
             //provided by the user is correct
-            char[] storedPassword = null;
+//            char[] storedPassword = null;
             //Look for the password corresponding to
             //the username in the local cache
-            for (var loginModel : usersCache.values()) {
-                if (username.equals(loginModel.getUsername())) {
-                    //If the username is found in cache
-                    //then copy the password that is stored
-                    //for that user in database
-                    storedPassword = Arrays.copyOf(
-                            loginModel.getPassword(),
-                            loginModel.getPassword().length);
-                    //Since the password has been found
-                    //we should exit this loop
-                    break;
-                }
-            }
+            usersCache.values()
+                    .stream()
+                    .filter(val -> username.equals(val.getUsername()))
+                    .forEach(val -> storePassword(val.getPassword()));
+//            for (var loginModel : usersCache.values()) {
+//                if (username.equals(loginModel.getUsername())) {
+//                    //If the username is found in cache
+//                    //then copy the password that is stored
+//                    //for that user in database
+//                    storedPassword = Arrays.copyOf(
+//                            loginModel.getPassword(),
+//                            loginModel.getPassword().length);
+//                    //Since the password has been found
+//                    //we should exit this loop
+//                    break;
+//                }
+//            }
 
             //If the stored password is equal to
             //what the user has provided, then mark the
@@ -173,11 +176,15 @@ public class LoginController {
 
     }
 
+    private void storePassword(char[] val) {
+        storedPassword = Arrays.copyOf(val, val.length);
+    }
+
     /**
      * Works in a background thread to retrieve the usernames and passwords from
      * database.
      */
-    private static class SwingWorkerImpl extends SwingWorker<Map<Integer, LoginModel>, Void> {
+    private static class UserLoaders extends SwingWorker<Map<Integer, LoginModel>, Void> {
 
         @Override
         protected Map<Integer, LoginModel> doInBackground() throws Exception {

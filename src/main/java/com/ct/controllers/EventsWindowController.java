@@ -10,11 +10,11 @@ import com.ct.models.CustomerModel;
 import com.ct.models.EventModel;
 import com.ct.views.EventsTableDesign;
 import com.ct.views.EventsWindow;
+import com.ct.views.RoundedDecimal;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -303,7 +303,9 @@ public class EventsWindowController {
             try {
                 price = priceText == null || priceText.isBlank()
                         ? BigDecimal.ZERO
-                        : new BigDecimal(priceText.trim()).setScale(2, RoundingMode.HALF_UP);
+                        : new RoundedDecimal()
+                                .toTwoDecimalPlaces(
+                                        new BigDecimal(priceText.trim()));
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(
                         eventsWindow,//Parent component
@@ -432,7 +434,9 @@ public class EventsWindowController {
             try {
                 price = priceText == null || priceText.isBlank()
                         ? BigDecimal.ZERO
-                        : new BigDecimal(priceText.trim()).setScale(2, RoundingMode.HALF_UP);
+                        : new RoundedDecimal()
+                                .toTwoDecimalPlaces(
+                                        new BigDecimal(priceText.trim()));
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(
                         eventsWindow,//Parent component
@@ -508,18 +512,22 @@ public class EventsWindowController {
                                 result.forEach(eventsCache::putIfAbsent);
 
                                 LOG.log(Level.INFO, "Events cache: [{0}]", eventsCache.values());
+                                
+                                //Only remove/insert a row if there
+                                //was a selected row to start with
+                                if (row >= 0) {
+                                    eventsTableDesign.removeRow(row);
 
-                                eventsTableDesign.removeRow(row);
-
-                                eventsTableDesign.insertRow(row, new Object[]{
-                                    id,
-                                    type,
-                                    name,
-                                    venue,
-                                    dateTime,
-                                    price,
-                                    remarks
-                                });
+                                    eventsTableDesign.insertRow(row, new Object[]{
+                                        id,
+                                        type,
+                                        name,
+                                        venue,
+                                        dateTime,
+                                        price,
+                                        remarks
+                                    });
+                                }
 
                             } catch (InterruptedException
                                      | ExecutionException ex) {

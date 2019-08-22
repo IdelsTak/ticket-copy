@@ -34,12 +34,29 @@ public class CustomerTableDesign extends DefaultTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        //Make the paid and issued
-        //columns show checkboxes
-        //instead of the strings "false" or "true"
-        return columnIndex == 7 || columnIndex == 8
-               ? Boolean.class
-               : super.getColumnClass(columnIndex);
+        switch (columnIndex) {
+            case 0:
+                return Number.class;
+            case 1:
+                return super.getColumnClass(columnIndex);
+            case 2:
+                return Number.class;
+            case 3:
+                return super.getColumnClass(columnIndex);
+            case 4://Allow case 4 to fall through
+            case 5:
+                return Number.class;
+            case 6:
+                return super.getColumnClass(columnIndex);
+            //Make the paid and issued
+            //columns show checkboxes
+            //instead of the strings "false" or "true"
+            case 7://Allow case 7 to fall through
+            case 8:
+                return Boolean.class;
+            default:
+                return super.getColumnClass(columnIndex);
+        }
     }
 
 }

@@ -10,12 +10,11 @@ import com.ct.models.CustomerModel;
 import com.ct.views.CustomerTableDesign;
 import com.ct.models.EventModel;
 import com.ct.views.CustomersWindow;
+import com.ct.views.RoundedDecimal;
 import com.github.lgooddatepicker.components.DatePicker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -148,11 +147,7 @@ public class CustomersWindowController {
 
         });
 
-        eventsComboBox.addItemListener(itemEvent -> {
-            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
-                calculateTotalTicketCost();
-            }
-        });
+        eventsComboBox.addItemListener(e -> calculateTotalTicketCost());
 
         //Create a swing worker named CustomersLoader
         //to retrieve customer data from database
@@ -170,6 +165,7 @@ public class CustomersWindowController {
                     result.forEach(customersCache::putIfAbsent);
 
                     customersCache.values().forEach(customer -> {
+                        var totalCostOfTickets = customer.getTotalCostOfTickets();
                         customersTableDesign.addRow(new Object[]{
                             customer.getId(),
                             customer.getName(),
@@ -197,9 +193,7 @@ public class CustomersWindowController {
         //which allows a customer to select an event
         var eventModels = new EventsWindowController().getEventModels();
         //Add all the events to the dropdown
-        eventModels.forEach((eventModel) -> {
-            eventsComboBox.addItem(eventModel);
-        });
+        eventModels.forEach(eventModel -> eventsComboBox.addItem(eventModel));
         //But don't select anything yet
         //Leave that to the user
         eventsComboBox.setSelectedIndex(-1);
@@ -269,8 +263,11 @@ public class CustomersWindowController {
      */
     private void calculateTotalTicketCost() {
         BigDecimal totalTicketCost = BigDecimal.ZERO;
-
-        if (/*selectedRow >= 0 &&*/ eventsComboBox.getSelectedItem() != null) {
+        //Calculate the total cost even when no user
+        //has been selected. This is especially important
+        //during the creation of a new user
+        if (/* selectedRow >= 0 && */eventsComboBox.getSelectedItem()
+                != null) {
             var eventModel = (EventModel) eventsComboBox.getSelectedItem();
 
             if (eventModel != null) {
@@ -287,14 +284,13 @@ public class CustomersWindowController {
                 }
 
                 if (numberOfTickets != null) {
-
                     totalTicketCost = BigDecimal.valueOf(numberOfTickets).multiply(ticketPrice);
                 }
 
             }
         }
 
-        totalTicketCost = totalTicketCost.setScale(2, RoundingMode.HALF_UP);
+        totalTicketCost = new RoundedDecimal().toTwoDecimalPlaces(totalTicketCost);
 
         ticketsTotalTextField.setText(totalTicketCost.toPlainString());
     }
@@ -307,7 +303,7 @@ public class CustomersWindowController {
     private static class CustomersLoader extends SwingWorker<Map<Integer, CustomerModel>, Void> {
 
         /**
-         * Loads customers' data in a background thread.
+         * Loads customer data in a background thread.
          *
          * @return a cache of customer's data.
          *
@@ -418,7 +414,9 @@ public class CustomersWindowController {
             try {
                 ticketsCost = totalCost == null || totalCost.isBlank()
                               ? BigDecimal.ZERO
-                              : new BigDecimal(totalCost.trim()).setScale(2, RoundingMode.HALF_UP);
+                              : new RoundedDecimal()
+                                .toTwoDecimalPlaces(
+                                        new BigDecimal(totalCost.trim()));
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(
                         customersWindow,//Parent component
@@ -566,7 +564,9 @@ public class CustomersWindowController {
             try {
                 ticketsCost = totalCost == null || totalCost.isBlank()
                               ? BigDecimal.ZERO
-                              : new BigDecimal(totalCost.trim()).setScale(2, RoundingMode.HALF_UP);
+                              : new RoundedDecimal()
+                                .toTwoDecimalPlaces(
+                                        new BigDecimal(totalCost.trim()));
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(
                         customersWindow,//Parent component
@@ -637,20 +637,23 @@ public class CustomersWindowController {
                             try {
                                 Map<Integer, CustomerModel> result = eventsLoader.get();
                                 result.forEach(customersCache::putIfAbsent);
+                                //Only remove/insert a row if there
+                                //was a selected row to start with
+                                if (row >= 0) {
+                                    customersTableDesign.removeRow(row);
 
-                                customersTableDesign.removeRow(row);
-
-                                customersTableDesign.insertRow(row, new Object[]{
-                                    id,
-                                    name,
-                                    phoneNumber,
-                                    eventModel,
-                                    numberOfTickets,
-                                    ticketsCost,
-                                    bookingDate,
-                                    paid,
-                                    issued
-                                });
+                                    customersTableDesign.insertRow(row, new Object[]{
+                                        id,
+                                        name,
+                                        phoneNumber,
+                                        eventModel,
+                                        numberOfTickets,
+                                        ticketsCost,
+                                        bookingDate,
+                                        paid,
+                                        issued
+                                    });
+                                }
 
                             } catch (InterruptedException
                                      | ExecutionException ex) {
@@ -662,7 +665,7 @@ public class CustomersWindowController {
                     eventsLoader.execute();
 
                 } catch (SQLException ex) {
-                    Logger.getLogger(CustomersWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                    LOG.log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -705,7 +708,7 @@ public class CustomersWindowController {
 
                     resetTableSelection();
 
-                    SwingWorker<Map<Integer, CustomerModel>, Void> customersLoader = new CustomersLoader();
+                    var customersLoader = new CustomersLoader();
 
                     customersLoader.addPropertyChangeListener(changeEvent -> {
                         if (changeEvent.getPropertyName().equals("state")
