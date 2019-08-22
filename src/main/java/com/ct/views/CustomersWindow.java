@@ -1,24 +1,31 @@
-/*
- * Copyright (c) 2019, Hiram K.
- * All rights reserved.
- *
- */
 package com.ct.views;
 
+import com.ct.models.CustomerModel;
 import com.ct.models.EventModel;
 import com.github.lgooddatepicker.components.DatePicker;
+import java.io.Serializable;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
+ * A <code>{@link JPanel}</code> containing the UI elements for showing and
+ * editing the properties of <code>{@link CustomerModel}</code>.
+ *
+ * @see JPanel
  *
  * @author admin
  */
-public class CustomersWindow extends javax.swing.JPanel {
+public class CustomersWindow extends JPanel {
 
+    /**
+     * The serialVersionUID used for serialization.
+     *
+     * @see Serializable
+     */
     private static final long serialVersionUID = 2311466034675098786L;
 
     /** Creates new form CustomersWindow */
@@ -26,54 +33,143 @@ public class CustomersWindow extends javax.swing.JPanel {
         initComponents();
     }
 
+    /**
+     * Retrieves the <code>{@link JButton}</code> for adding customers to
+     * database.
+     *
+     * @return the <code>{@link JButton}</code> for adding customers to
+     *         database.
+     */
     public JButton getAddButton() {
         return addButton;
     }
 
+    /**
+     * Retrieves the <code>{@link DatePicker}</code> that sets the booking date.
+     *
+     * @return the <code>{@link DatePicker}</code> that sets the booking date.
+     */
     public DatePicker getBookingDatePicker() {
         return bookingDatePicker;
     }
 
+    /**
+     * Retrieves the <code>{@link JTable}</code> containing the customers'
+     * details.
+     *
+     * @return the <code>{@link JTable}</code> containing the customers'
+     *         details.
+     */
     public JTable getCustomersTable() {
         return customersTable;
     }
 
+    /**
+     * Retrieves the <code>{@link JButton}</code> for deleting customers from
+     * database.
+     *
+     * @return the <code>{@link JButton}</code> for deleting customers from
+     *         database.
+     */
     public JButton getDeleteButton() {
         return deleteButton;
     }
 
+    /**
+     * Retrieves the <code>{@link JComboBox}</code> that chooses the events the
+     * customer seeks to attend.
+     *
+     * @return the <code>{@link JComboBox}</code> that chooses the events the
+     *         customer seeks to attend.
+     */
     public JComboBox<EventModel> getEventsComboBox() {
         return eventsComboBox;
     }
 
+    /**
+     * Retrieves the <code>{@link JTextField}</code> displaying the customer's
+     * id property. Note, it is not editable.
+     *
+     * @return the <code>{@link JTextField}</code> displaying the customer's
+     *         id property.
+     */
     public JTextField getIdTextField() {
         return idTextField;
     }
 
+    /**
+     * Retrieves the <code>{@link JCheckBox}</code> showing whether the customer
+     * has been issued with a ticket.
+     *
+     * @return the <code>{@link JCheckBox}</code> showing whether the customer
+     *         has been issued with a ticket.
+     */
     public JCheckBox getIssuedCheckBox() {
         return issuedCheckBox;
     }
 
+    /**
+     * Retrieves the <code>{@link JTextField}</code> displaying the customer's
+     * name property.
+     *
+     * @return the <code>{@link JTextField}</code> displaying the customer's
+     *         name property.
+     */
     public JTextField getNameTextField() {
         return nameTextField;
     }
 
+    /**
+     * Retrieves the <code>{@link JTextField}</code> displaying the number of
+     * tickets the customer has bought.
+     *
+     * @return the <code>{@link JTextField}</code> displaying the number of
+     *         tickets the customer has bought.
+     */
     public JTextField getNoOfTicketsTextField() {
         return noOfTicketsTextField;
     }
 
+    /**
+     * Retrieves the <code>{@link JCheckBox}</code> showing whether the customer
+     * has paid for tickets.
+     *
+     * @return the <code>{@link JCheckBox}</code> showing whether the customer
+     *         has paid for tickets.
+     */
     public JCheckBox getPaidCheckBox() {
         return paidCheckBox;
     }
 
+    /**
+     * Retrieves the <code>{@link JTextField}</code> displaying the customer's
+     * phone number property.
+     *
+     * @return the <code>{@link JTextField}</code> displaying the customer's
+     *         phone number property.
+     */
     public JTextField getPhoneTextField() {
         return phoneTextField;
     }
 
+    /**
+     * Retrieves the <code>{@link JTextField}</code> displaying the total cost
+     * of tickets that the customer has bought.
+     *
+     * @return the <code>{@link JTextField}</code> displaying the total cost
+     *         of tickets that the customer has bought.
+     */
     public JTextField getTicketsTotalTextField() {
         return ticketsTotalTextField;
     }
 
+    /**
+     * Retrieves the <code>{@link JButton}</code> used for updating customers'
+     * details in database.
+     *
+     * @return the <code>{@link JButton}</code> used for updating customers'
+     *         details in database.
+     */
     public JButton getUpdateButton() {
         return updateButton;
     }
