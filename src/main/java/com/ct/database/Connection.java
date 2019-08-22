@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ct.database;
 
 import com.ct.config.Configs;
@@ -12,12 +7,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * This is a utility class that enables its calling clients to get an instance
+ * of a database connection. It functions by first loading the properties from
+ * an external file (using the <code>loadProperties</code> method of class
+ * <code>{@link Configs}</code>. After that, it can then create a database
+ * connection using the <code>{@link DriverManager}</code>.
+ * <p>
+ * This class keeps a static instance of the created connection throughout the
+ * application's life cycle. This is useful because it prevents multiple
+ * instantiation of the database connection.
  *
  * @author admin
  */
 public class Connection {
 
+    /**
+     * This class's logger.
+     */
     private static final Logger LOG = Logger.getLogger(Connection.class.getName());
+    /**
+     * The static, database <code>{@link Connection}</code> created by
+     * <code>{@link DriverManager}</code> using the properties loaded from an
+     * external file by <code>{@link Configs}</code>.
+     */
     private static java.sql.Connection connection;
 
     /**
@@ -36,28 +48,24 @@ public class Connection {
             //properties from the external file
             var configs = new Configs();
             configs.loadProperties();
-            
-            configs.getUsername();
-            configs.getUsername();
-            configs.getPassword();
             //The url of the database
-            String url = configs.getUrl()/*"jdbc:mysql://localhost:3306/mydb"*/;
+            var url = configs.getUrl();
             //The user name
-            String user = configs.getUsername()/*"root"*/;
+            var user = configs.getUsername();
             //The database password
-            String password = String.valueOf(configs.getPassword())/*"corner-dicing"*/;
-            
-            //Attempt to retrieve a connection
-            //Will fail and throw an exception
-            //if the credentials are incorrect or
-            //if the database doesn't exist
+            var password = String.valueOf(configs.getPassword());
+
+            //Attempt to create a database connection
+            //Will fail and throw an exception:
+            //(1) if the credentials are incorrect or
+            //(2) if the database doesn't exist
             try {
                 connection = DriverManager.getConnection(url, user, password);
             } catch (SQLException ex) {
                 LOG.log(Level.SEVERE, null, ex);
             }
         }
-        
+        //The connection to database
         return connection;
     }
 
