@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2019, Hiram K.
- * All rights reserved.
- *
- */
 package com.ct.views;
 
 import com.ct.models.EventModel;
