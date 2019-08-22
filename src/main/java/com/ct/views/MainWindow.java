@@ -1,20 +1,25 @@
-/*
- * Copyright (c) 2019, Hiram K.
- * All rights reserved.
- *
- */
 package com.ct.views;
 
 import java.awt.Frame;
+import java.io.Serializable;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 /**
+ * A <code>{@link JFrame}</code> containing the UI elements for application.
+ *
+ * @see JFrame
  *
  * @author admin
  */
-public class MainWindow extends javax.swing.JFrame {
+public class MainWindow extends JFrame {
 
+    /**
+     * The serialVersionUID used for serialization.
+     *
+     * @see Serializable
+     */
     private static final long serialVersionUID = -3077898430347351322L;
 
     /** Creates new form MainWindow */
@@ -22,39 +27,95 @@ public class MainWindow extends javax.swing.JFrame {
         super();
         //Open the window in its maximized state
         super.setExtendedState(Frame.MAXIMIZED_BOTH);
-        
+
         initComponents();
     }
 
+    /**
+     * Retrieves the <code>{@link JPanel}</code> that will hold the various
+     * <code>{@link JPanel}</code>s that are opened. These may include:
+     * <ul>
+     * <li>{@link EventsWindow}
+     * <li>{@link CustomersWindow}
+     * </ul>
+     *
+     * @return the <code>{@link JPanel}</code> that will hold various opened
+     *         panels.
+     */
     public JPanel getPrimaryPanel() {
         return primaryPanel;
     }
 
+    /**
+     * Retrieves the <code>{@link JMenuItem}</code> that creates and adds the
+     * <code>{@link CustomersWindow}</code> to the
+     * <code>{@link #primaryPanel}</code>.
+     *
+     * @return the <code>{@link JMenuItem}</code> that creates and adds the
+     *         <code>{@link CustomersWindow}</code> to the
+     *         <code>{@link #primaryPanel}</code>.
+     */
     public JMenuItem getCustomersMenuItem() {
         return customersMenuItem;
     }
 
+    /**
+     * Retrieves the <code>{@link JMenuItem}</code> that creates and adds the
+     * <code>{@link EventsWindow}</code> to the
+     * <code>{@link #primaryPanel}</code>.
+     *
+     * @return the <code>{@link JMenuItem}</code> that creates and adds the
+     *         <code>{@link EventsWindow}</code> to the
+     *         <code>{@link #primaryPanel}</code>.
+     */
     public JMenuItem getEventsMenuItem() {
         return eventsMenuItem;
     }
 
+    /**
+     * Retrieves the <code>{@link JMenuItem}</code> that creates and opens the
+     * <code>{@link TicketsSoldReportPopup}</code>.
+     *
+     * @return the <code>{@link JMenuItem}</code> that creates and opens the
+     *         <code>{@link TicketsSoldReportPopup}</code>.
+     */
     public JMenuItem getNoOfTicketsSoldMenuItem() {
         return noOfTicketsSoldMenuItem;
     }
 
+    /**
+     * Retrieves the <code>{@link JMenuItem}</code> that creates and opens the
+     * <code>{@link Last30DaysSalesReportPopup}</code>.
+     *
+     * @return the <code>{@link JMenuItem}</code> that creates and opens the
+     *         <code>{@link Last30DaysSalesReportPopup}</code>.
+     */
     public JMenuItem getSalesReportLast30DaysMenuItem() {
         return salesReportLast30DaysMenuItem;
     }
 
+    /**
+     * Retrieves the <code>{@link JMenuItem}</code> that creates and opens the
+     * <code>{@link LoginWindow}</code> and signs out the user.
+     *
+     * @return the <code>{@link JMenuItem}</code> that creates and opens the
+     *         <code>{@link LoginWindow}</code> and signs out the user.
+     */
     public JMenuItem getSignoutMenuItem() {
         return signoutMenuItem;
     }
 
+    /**
+     * Retrieves the <code>{@link JMenuItem}</code> that creates and opens the
+     * <code>{@link TotalSalesReportPopup}</code>.
+     *
+     * @return the <code>{@link JMenuItem}</code> that creates and opens the
+     *         <code>{@link TotalSalesReportPopup}</code>.
+     */
     public JMenuItem getTotalSalesMenuItem() {
         return totalSalesMenuItem;
     }
 
-    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
